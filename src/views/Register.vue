@@ -1,14 +1,37 @@
 <template>
   <div class="login">
     <div class="loginTop">
-      Login
+      <div>
+        <router-link to="/">
+          <img src="../assets/icon/leftArrow.png" alt="" />
+        </router-link>
+      </div>
+      <div>Register</div>
+      <div></div>
     </div>
     <br />
     <br />
     <b-container class="wrapperMain">
-      <p><b> Hi, Welcome back! </b></p>
+      <p><b> Let’s create your account!</b></p>
       <br />
       <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+        <b-form-group
+          id="input-group-2"
+          class="inputLabel"
+          label="Name:"
+          label-for="input-1"
+        >
+          <b-form-input
+            id="input-1"
+            class="inputForm"
+            style="color: black; font-weight: bold"
+            v-model="form.username"
+            type="text"
+            required
+            placeholder="Enter your name"
+          ></b-form-input>
+        </b-form-group>
+
         <b-form-group
           id="input-group-2"
           class="inputLabel"
@@ -43,16 +66,14 @@
             placeholder="Enter password"
           ></b-form-input>
         </b-form-group>
-        <div class="forgot" style=" text-align: right; color: #7e98df;">
-          <router-link to="/"> Forgot password? </router-link>
-        </div>
+
         <div style="  text-align: center;">
           <b-button class="loginButton" type="submit" variant="primary"
-            >Login</b-button
+            >Register</b-button
           >
         </div>
         <div class="separator">
-          <p>Login With</p>
+          <p>Register With</p>
         </div>
         <div style="  text-align: center; ">
           <b-button
@@ -69,10 +90,6 @@
             Google</b-button
           >
         </div>
-        <div style="text-align: center; margin-top: 30px">
-          Don’t have an account?
-          <router-link to="/register"> Sign Up </router-link>
-        </div>
       </b-form>
     </b-container>
   </div>
@@ -80,10 +97,11 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {
       form: {
+        user_name: "",
         user_email: "",
         user_password: ""
       }
@@ -122,6 +140,8 @@ export default {
   font-weight: 700;
   margin-top: 30px;
   color: #7e98df;
+  display: flex;
+  justify-content: space-around;
 }
 .inputLabel {
   color: #848484;
@@ -132,9 +152,7 @@ export default {
   border-bottom: black 2px solid;
   margin-top: 20px;
 }
-.forgot {
-  margin-top: 30px;
-}
+
 .loginButton {
   margin-top: 30px;
   background-color: #7e98df;
