@@ -80,11 +80,6 @@ export default {
     }
   },
   created() {
-    if (!this.$route.params.username) {
-      this.$router.push("/");
-    }
-    this.username = this.$route.params.username;
-    // console.log(this.$route.params);
     this.socket.on("chatMessage", data => {
       this.messages.push(data);
     });

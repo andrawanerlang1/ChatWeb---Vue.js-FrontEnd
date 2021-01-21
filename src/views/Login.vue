@@ -20,7 +20,7 @@
             id="input-2"
             class="inputForm"
             style="color: black; font-weight: bold"
-            v-model="form.email"
+            v-model="form.user_email"
             type="email"
             required
             placeholder="Enter email"
@@ -37,7 +37,7 @@
             id="input-3"
             class="inputForm"
             style="color: black; font-weight: bold"
-            v-model="form.password"
+            v-model="form.user_password"
             type="password"
             required
             placeholder="Enter password"
@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
   data() {
@@ -90,17 +92,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["login"]),
+
     onSubmit() {
-      this.$router.push({
-        name: "Chat",
-        params: {
-          ...this.form
-        }
-      });
+      this.login(this.form)
+        .then(result => {
+          console.log(result);
+          this.$router.push("/");
+        })
+        .catch(error => {
+          this.$toasted.error(error.data.msg);
+        });
     },
-    onReset() {
-      //proses reset
-    },
+
     google() {
       this.$swal("This Feature is coming soon");
     }

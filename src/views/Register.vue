@@ -2,7 +2,7 @@
   <div class="login">
     <div class="loginTop">
       <div>
-        <router-link to="/">
+        <router-link to="/login">
           <img src="../assets/icon/leftArrow.png" alt="" />
         </router-link>
       </div>
@@ -25,7 +25,7 @@
             id="input-1"
             class="inputForm"
             style="color: black; font-weight: bold"
-            v-model="form.username"
+            v-model="form.user_name"
             type="text"
             required
             placeholder="Enter your name"
@@ -43,7 +43,7 @@
             id="input-2"
             class="inputForm"
             style="color: black; font-weight: bold"
-            v-model="form.email"
+            v-model="form.user_email"
             type="email"
             required
             placeholder="Enter email"
@@ -60,7 +60,7 @@
             id="input-3"
             class="inputForm"
             style="color: black; font-weight: bold"
-            v-model="form.password"
+            v-model="form.user_password"
             type="password"
             required
             placeholder="Enter password"
@@ -91,11 +91,28 @@
           >
         </div>
       </b-form>
+      <b-modal
+        id="modal"
+        ref="my-modal"
+        hide-footer
+        title="Account created successfully"
+      >
+        <div class="d-block text-center">
+          <h3>now, you can login</h3>
+        </div>
+        <router-link to="/login">
+          <b-button class="mt-3" variant="outline-success" block
+            >Go to Login Page</b-button
+          >
+        </router-link>
+      </b-modal>
     </b-container>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Register",
   data() {
@@ -108,19 +125,22 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["register"]),
     onSubmit() {
-      this.$router.push({
-        name: "Chat",
-        params: {
-          ...this.form
-        }
-      });
-    },
-    onReset() {
-      //proses reset
+      this.register(this.form)
+        .then(result => {
+          console.log(result);
+          this.showModal();
+        })
+        .catch(error => {
+          this.$toasted.error(error);
+        });
     },
     google() {
       this.$swal("This Feature is coming soon");
+    },
+    showModal() {
+      this.$refs["my-modal"].show();
     }
   }
 };
