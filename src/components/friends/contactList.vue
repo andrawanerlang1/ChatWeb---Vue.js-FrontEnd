@@ -7,9 +7,8 @@
       <div>Contacts</div>
       <div></div>
     </div>
-    <br />
-    <div class="friendRequest">
-      Friend Request
+    <div class="friend">
+      <p><b> Friend Request </b></p>
       <div
         class="friendRequestBox"
         v-for="(item, index) in friendReqs"
@@ -26,6 +25,9 @@
           </b-row></b-container
         >
       </div>
+    </div>
+    <div class="friend">
+      <p><b> Friend List </b></p>
     </div>
   </div>
 </template>
@@ -71,13 +73,27 @@ export default {
   font-weight: bold;
   font-size: 23px;
 }
+.friend {
+  margin-top: 30px;
+  color: #7e98df;
+}
+.friend p {
+  border-bottom: #7e98df 4px dashed;
+}
 .friendRequestBox {
   margin-top: 20px;
   padding: 2px;
   border: solid 2px #7e98df;
   border-radius: 10px;
 }
+.friendRequestBox:hover {
+  background-color: #7e98df;
+  color: black;
+  border: black 3px solid;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+}
 .friendRequestBox img {
+  border-radius: 15px;
   width: 100px;
   height: 100px;
 }
