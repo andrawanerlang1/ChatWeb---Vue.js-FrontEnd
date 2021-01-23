@@ -37,10 +37,9 @@ export default {
     getUserByIds(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/user/${payload}`)
+          .get(`http://${process.env.VUE_APP_URL}/user/byId/${payload}`)
           .then(result => {
             context.commit("setUserById", result.data.data[0]);
-            console.log(result);
             resolve(result);
           })
           .catch(error => {
@@ -49,14 +48,14 @@ export default {
       });
     },
     updateUsers(context, payload) {
+      console.log(payload);
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://${process.env.VUE_APP_URL}/user/${context.state.user.user_id}`,
+            `http://${process.env.VUE_APP_URL}/user/edit/${context.state.user.user_id}`,
             payload
           )
           .then(result => {
-            console.log(result);
             resolve(result);
           })
           .catch(error => {
@@ -72,7 +71,6 @@ export default {
             payload
           )
           .then(result => {
-            console.log(result);
             resolve(result);
           })
           .catch(error => {
@@ -122,8 +120,8 @@ export default {
               error.response.data.msg === "jwt expired" ||
               error.response.data.msg === "jwt malformed")
           ) {
-            context.dispatch("logout");
             alert(error.response.data.msg);
+            context.dispatch("logout");
           }
           return Promise.reject(error);
         }

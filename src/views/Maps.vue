@@ -37,7 +37,6 @@ export default {
           lat: coordinates.lat,
           lng: coordinates.lng
         };
-        console.log(coordinates);
       })
       .catch(error => {
         alert(error);
@@ -45,10 +44,6 @@ export default {
   },
   methods: {
     clickMarker(position) {
-      console.log("clicked marker");
-      console.log(position);
-      console.log(position.latLng.lat());
-      console.log(position.latLng.lng());
       this.coordinate = {
         lat: position.latLng.lat(),
         lng: position.latLng.lng()

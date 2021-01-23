@@ -16,18 +16,24 @@
           </template>
 
           <b-dropdown-item
-            @click="goSetting"
+            @click="selectMode('profile')"
             variant="primary"
             class="dropOption"
             ><img src="../../assets/icon/setting.png" />
             Settings</b-dropdown-item
           >
-          <b-dropdown-item href="#" variant="primary" class="dropOption"
+          <b-dropdown-item
+            @click="selectMode('contact')"
+            variant="primary"
+            class="dropOption"
             ><img
               src="../../assets/icon/contact.png"
             />Contacts</b-dropdown-item
           >
-          <b-dropdown-item href="#" variant="primary" class="dropOption"
+          <b-dropdown-item
+            @click="selectMode('invite')"
+            variant="primary"
+            class="dropOption"
             ><img src="../../assets/icon/invite.png" />Invite
             Friends</b-dropdown-item
           >
@@ -71,7 +77,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.getUserById();
+  },
   computed: {
     ...mapGetters({
       user: "setUser"
@@ -79,9 +87,12 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapActions(["changeMode", "logout"]),
-    goSetting() {
-      this.changeMode("profile");
+    ...mapActions(["changeMode", "logout", "getUserByIds"]),
+    getUserById() {
+      this.getUserByIds(this.user.user_id);
+    },
+    selectMode(param) {
+      this.changeMode(param);
     },
     loggingout() {
       this.logout();

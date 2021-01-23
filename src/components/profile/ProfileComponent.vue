@@ -7,8 +7,22 @@
       <div>@{{ user.user_email }}</div>
       <div></div>
     </div>
-    <div class="profileImage">
-      <img src="../../assets/icon/profilestock.jpg" alt="" />
+    <div class="profileImage" @click="chooseFile()">
+      <img v-if="!user.user_image" src="../../assets/icon/profilestock.jpg" />
+      <img
+        id="imageUploads"
+        class="imgUpload"
+        v-if="user.user_image && !url"
+        :src="'http://localhost:3000/user/' + user.user_image"
+      />
+      <img id="imageUpload" class="imgUpload" v-if="url" :src="url" />
+      <input
+        id="formInputImage"
+        type="file"
+        accept="image/x-png,image/jpg,image/jpeg"
+        @change="handleFile"
+        hidden
+      />
     </div>
     <div class="namePlate">
       <div>
@@ -60,6 +74,7 @@
         </div>
         Bio
       </div>
+
       <div class="buttonUpdate">
         <button v-if="type === 'watch'" @click="changeType('edit')">
           Edit Info
@@ -69,6 +84,26 @@
         <button v-if="type === 'edit'" @click="updateProfile">
           Save Changes
         </button>
+      </div>
+      <div class="location">
+        My Location
+        <GmapMap
+          :center="coordinate"
+          :zoom="10"
+          map-type-id="terrain"
+          class="gmap"
+        >
+          <GmapMarker
+            :position="coordinate"
+            :clickable="true"
+            :draggable="true"
+            @drag="dragMarker"
+            @click="clickMarker"
+            icon="https://img.icons8.com/color/48/000000/map-pin.png"
+          />
+        </GmapMap>
+        <b> Click marker to update your coordinate </b>
+        <p>My Coordinate :{{ user.user_lat }}, {{ user.user_lng }}</p>
       </div>
       <div class="setting">
         Settings
@@ -90,7 +125,26 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
-    return { type: "watch" };
+    return {
+      type: "watch",
+      url: null,
+      coordinate: {
+        lat: 10,
+        lng: 10
+      }
+    };
+  },
+  created() {
+    this.$getLocation()
+      .then(coordinates => {
+        this.coordinate = {
+          lat: coordinates.lat,
+          lng: coordinates.lng
+        };
+      })
+      .catch(error => {
+        alert(error);
+      });
   },
   mounted() {
     this.getUserById();
@@ -102,7 +156,29 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapActions(["changeMode", "getUserByIds", "updateUsers"]),
+    ...mapActions(["changeMode", "getUserByIds", "updateUsers", "updateImage"]),
+
+    handleFile(event) {
+      const type = event.target.files[0].type;
+      if (type != "image/jpeg" && type != "image/png" && type != "image/jpg") {
+        return this.$toasted.error("Image must be JPG/PNG");
+      } else {
+        this.user.user_image = event.target.files[0];
+        this.url = URL.createObjectURL(event.target.files[0]);
+        this.updateImage(this.user)
+          .then(result => {
+            console.log(result);
+            this.$toasted.success("Profile Image Updated");
+          })
+          .catch(error => {
+            console.log(error);
+            this.$toasted.error(error.data.msg);
+          });
+      }
+    },
+    chooseFile() {
+      document.getElementById("formInputImage").click();
+    },
     getUserById() {
       this.getUserByIds(this.user.user_id);
     },
@@ -124,6 +200,24 @@ export default {
     },
     changeType(param) {
       this.type = param;
+    },
+    dragMarker(position) {
+      this.coordinate = {
+        lat: position.latLng.lat(),
+        lng: position.latLng.lng()
+      };
+    },
+    clickMarker(position) {
+      this.user.user_lat = position.latLng.lat();
+      this.user.user_lng = position.latLng.lng();
+      this.updateUsers(this.user)
+        .then(result => {
+          console.log(result);
+          this.$toasted.success("Coordinate Updated");
+        })
+        .catch(error => {
+          this.$toasted.error(error.data.msg);
+        });
     }
   }
 };
@@ -147,6 +241,7 @@ export default {
   margin-right: auto;
   margin-top: 50px;
 }
+
 .profileImage img {
   width: 150px;
   height: 150px;
@@ -155,6 +250,9 @@ export default {
   border-radius: 30px;
   object-fit: cover;
   border: #7e98df 2px solid;
+}
+.profileImage img:hover {
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
 }
 .namePlate {
   text-align: center;
@@ -169,6 +267,20 @@ export default {
   border-bottom: rgb(206, 198, 198) 2px solid;
   padding-bottom: 20px;
   padding-top: 20px;
+}
+.location {
+  margin-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.location {
+  font-size: 15px;
+  font-weight: normal;
+}
+.gmap {
+  width: 100%;
+  height: 300px;
 }
 .username {
   color: grey;
@@ -201,7 +313,7 @@ export default {
 .setting {
   font-size: 22px;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .changePassword {
   background-color: transparent;
