@@ -186,7 +186,13 @@ export default {
       if (!this.user.user_name) {
         return this.$toasted.error("Username cannot be empty");
       }
-      this.updateUsers(this.user)
+      const setData = {
+        user_name: this.user.user_name,
+        user_email: this.user.user_email,
+        user_number: this.user.user_number,
+        user_bio: this.user.user_bio
+      };
+      this.updateUsers(setData)
         .then(result => {
           this.$toasted.success(result.data.msg);
         })
@@ -210,7 +216,11 @@ export default {
     clickMarker(position) {
       this.user.user_lat = position.latLng.lat();
       this.user.user_lng = position.latLng.lng();
-      this.updateUsers(this.user)
+      const setData = {
+        user_lat: this.user.user_lat,
+        user_lng: this.user.user_lng
+      };
+      this.updateUsers(setData)
         .then(result => {
           console.log(result);
           this.$toasted.success("Coordinate Updated");

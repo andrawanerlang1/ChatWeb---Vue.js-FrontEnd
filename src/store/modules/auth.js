@@ -56,6 +56,7 @@ export default {
             payload
           )
           .then(result => {
+            console.log(result.data);
             resolve(result);
           })
           .catch(error => {

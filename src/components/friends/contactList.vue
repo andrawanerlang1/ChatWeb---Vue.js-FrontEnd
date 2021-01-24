@@ -14,9 +14,20 @@
         v-for="(item, index) in friendReqs"
         :key="index"
       >
-        <b-container fluid>
+        <b-container fluid @click="showModal(index)">
           <b-row style="text-align:center">
-            <b-col> <img src="../../assets/icon/profilestock.jpg"/></b-col>
+            <b-col>
+              <img
+                v-if="!item.user_image"
+                src="../../assets/icon/profilestock.jpg"
+              />
+              <img
+                id="imageUploads"
+                class="imgUpload"
+                v-if="item.user_image"
+                :src="'http://localhost:3000/user/' + item.user_image"
+              />
+            </b-col>
             <b-col>
               <br />
               {{ item.user_name }} <br />
@@ -26,8 +37,69 @@
         >
       </div>
     </div>
+    <b-modal id="modalAcceptFriend" hide-footer>
+      <template #modal-title>
+        Accept this user as friend?
+      </template>
+      <div class="d-block text-center">
+        <img
+          v-if="!friendReqs[userIndex].user_image"
+          style="width:100px;height:100px"
+          src="../../assets/icon/profilestock.jpg"
+        />
+        <img
+          id="imageUploads"
+          style="width:100px;height:100px"
+          class="imgUpload"
+          v-if="friendReqs[userIndex].user_image"
+          :src="
+            'http://localhost:3000/user/' + friendReqs[userIndex].user_image
+          "
+        />
+        <br />
+        <div>
+          {{ friendReqs[userIndex].user_name }} <br />
+          {{ friendReqs[userIndex].user_email }}
+        </div>
+      </div>
+      <b-button
+        class="mt-3"
+        variant="success"
+        block
+        @click="acceptFriendClick(friendReqs[userIndex].user_id)"
+        >Accept</b-button
+      >
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')"
+        >Cancel</b-button
+      >
+    </b-modal>
     <div class="friend">
       <p><b> Friend List </b></p>
+      <div
+        class="friendRequestBox"
+        v-for="(item, index) in friendList"
+        :key="index"
+      >
+        <b-container fluid>
+          <b-row style="text-align:center">
+            <b-col>
+              <img
+                v-if="!item.user_image"
+                src="../../assets/icon/profilestock.jpg"/>
+              <img
+                id="imageUploads"
+                class="imgUpload"
+                v-if="item.user_image"
+                :src="'http://localhost:3000/user/' + item.user_image"
+            /></b-col>
+            <b-col>
+              <br />
+              {{ item.user_name }} <br />
+              {{ item.user_email }}
+            </b-col>
+          </b-row></b-container
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -39,20 +111,43 @@ export default {
   data() {
     return {
       type: "invite",
-      searchParam: null
+      searchParam: null,
+      userIndex: 0
     };
   },
   created() {
     this.getFriendReqs(this.user.user_id);
+    this.getFriendList(this.user.user_id);
   },
   computed: {
     ...mapGetters({
       user: "setUser",
-      friendReqs: "getterFriendReqs"
+      friendReqs: "getterFriendReqs",
+      friendList: "getterFriendList"
     })
   },
   methods: {
-    ...mapActions(["getFriendReqs", "clearFriends", "changeMode"]),
+    ...mapActions([
+      "addFriends",
+      "acceptFriends",
+      "getFriendReqs",
+      "getFriendList",
+      "clearFriends",
+      "changeMode"
+    ]),
+    async acceptFriendClick(id) {
+      const setData = { user_id: this.user.user_id, friend_id: id };
+      await this.addFriends(setData);
+      const setDataReverse = { user_id: id, friend_id: this.user.user_id };
+      await this.acceptFriends(setData);
+      await this.acceptFriends(setDataReverse);
+      this.$router.go();
+    },
+    showModal(index) {
+      this.userIndex = index;
+      console.log(index);
+      this.$bvModal.show("modalAcceptFriend");
+    },
     goChat() {
       this.clearFriends();
       this.changeMode("chat");

@@ -3,7 +3,8 @@ import axios from "axios";
 export default {
   state: {
     friend: {},
-    friendReqs: []
+    friendReqs: [],
+    friendList: []
   },
   mutations: {
     setFriend(state, payload) {
@@ -11,6 +12,9 @@ export default {
     },
     setFriendReqs(state, payload) {
       state.friendReqs = payload;
+    },
+    setFriendList(state, payload) {
+      state.friendList = payload;
     },
     clearFriend(state) {
       state.friend = {};
@@ -82,6 +86,19 @@ export default {
           });
       });
     },
+    acceptFriends(context, payload) {
+      console.log(context);
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`http://${process.env.VUE_APP_URL}/friend/accept`, payload)
+          .then(result => {
+            resolve(result.data.msg);
+          })
+          .catch(error => {
+            reject(error.response.data.msg);
+          });
+      });
+    },
     getFriendReqs(context, payload) {
       console.log(context);
       return new Promise((resolve, reject) => {
@@ -100,6 +117,22 @@ export default {
           });
       });
     },
+    getFriendList(context, payload) {
+      console.log(context);
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://${process.env.VUE_APP_URL}/friend/friendList/${payload}`)
+          .then(result => {
+            console.log(result.data.data);
+            context.commit("setFriendList", result.data.data);
+            resolve(result.data.data);
+          })
+          .catch(error => {
+            console.log(error.response);
+            reject(error.response.data.msg);
+          });
+      });
+    },
     clearFriends(context) {
       context.commit("clearFriend");
     }
@@ -107,6 +140,9 @@ export default {
   getters: {
     getFriend(state) {
       return state.friend;
+    },
+    getterFriendList(state) {
+      return state.friendList;
     },
     getterFriendReqs(state) {
       return state.friendReqs;

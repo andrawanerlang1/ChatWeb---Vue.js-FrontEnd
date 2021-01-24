@@ -50,6 +50,23 @@
         </b-dropdown>
       </div>
     </div>
+    <div class="profileImage">
+      <img v-if="!user.user_image" src="../../assets/icon/profilestock.jpg" />
+      <img
+        id="imageUploads"
+        class="imgUpload"
+        v-if="user.user_image"
+        :src="'http://localhost:3000/user/' + user.user_image"
+      />
+    </div>
+    <div class="namePlate">
+      <div>
+        {{ user.user_name }}
+      </div>
+      <p>
+        {{ user.user_bio }}
+      </p>
+    </div>
     <div class="searchMessage">
       <div class="searchInputs">
         <img
@@ -148,7 +165,28 @@ export default {
   border: 0;
   background-color: transparent;
 }
+.profileImage {
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
 
-@media screen and (max-width: 500px) {
+.profileImage img {
+  width: 150px;
+  height: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 30px;
+  object-fit: cover;
+  border: #7e98df 2px solid;
+}
+.namePlate {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.namePlate div {
+  font-size: 27px;
+  font-weight: bold;
 }
 </style>
