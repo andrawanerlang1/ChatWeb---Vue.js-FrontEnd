@@ -97,8 +97,8 @@
               {{ item.user_name }} <br />
               {{ item.user_email }}
             </b-col>
-          </b-row></b-container
-        >
+          </b-row>
+        </b-container>
       </div>
     </div>
   </div>

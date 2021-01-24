@@ -7,13 +7,14 @@
         <b-col v-if="mode === 'contact'" md="4" sm="12"><ContactMenu /></b-col>
         <b-col v-if="mode === 'invite'" md="4" sm="12"><InviteMenu /></b-col>
 
-        <b-col md="8" sm="12" class="chatSection">bagian chat {{ user }}</b-col>
+        <b-col md="8" sm="12" class="chatSection"> <ChatSection /> </b-col>
       </b-row>
     </b-container>
   </div>
 </template>
 
 <script>
+import ChatSection from "../components/chat/ChatSection";
 import ChatMenu from "../components/chat/ChatMenu";
 import ProfileMenu from "../components/profile/ProfileComponent";
 import InviteMenu from "../components/friends/InviteFriend";
@@ -22,7 +23,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
-  components: { ChatMenu, ProfileMenu, InviteMenu, ContactMenu },
+  components: { ChatMenu, ProfileMenu, InviteMenu, ContactMenu, ChatSection },
 
   computed: {
     ...mapGetters({ user: "setUser", mode: "getMode" })
@@ -32,7 +33,6 @@ export default {
 
 <style scoped>
 .chatSection {
-  background-color: rgb(241, 235, 235);
-  margin-top: 20px;
+  padding-top: 20px;
 }
 </style>

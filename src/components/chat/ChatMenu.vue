@@ -81,7 +81,43 @@
         ></b-form-input>
       </div>
       <div class="searchImage">
-        <img src="../../assets/icon/Plus.png" alt="" />
+        <img
+          @click="$bvModal.show('modalFriendList')"
+          src="../../assets/icon/Plus.png"
+          alt=""
+        />
+        <b-modal id="modalFriendList" hide-footer>
+          <template #modal-title>
+            Friend i would like to chat
+          </template>
+          <div class="friend">
+            <div
+              class="friendRequestBox"
+              v-for="(item, index) in friendList"
+              :key="index"
+            >
+              <b-container fluid>
+                <b-row style="text-align:center">
+                  <b-col>
+                    <img
+                      v-if="!item.user_image"
+                      src="../../assets/icon/profilestock.jpg"/>
+                    <img
+                      id="imageUploads"
+                      class="imgUpload"
+                      v-if="item.user_image"
+                      :src="'http://localhost:3000/user/' + item.user_image"
+                  /></b-col>
+                  <b-col>
+                    <br />
+                    {{ item.user_name }} <br />
+                    {{ item.user_email }}
+                  </b-col>
+                </b-row>
+              </b-container>
+            </div>
+          </div>
+        </b-modal>
       </div>
     </div>
   </div>
@@ -97,14 +133,18 @@ export default {
   mounted() {
     this.getUserById();
   },
+  created() {
+    this.getFriendList(this.user.user_id);
+  },
   computed: {
     ...mapGetters({
-      user: "setUser"
+      user: "setUser",
+      friendList: "getterFriendList"
     })
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapActions(["changeMode", "logout", "getUserByIds"]),
+    ...mapActions(["changeMode", "logout", "getUserByIds", "getFriendList"]),
     getUserById() {
       this.getUserByIds(this.user.user_id);
     },
@@ -188,5 +228,22 @@ export default {
 .namePlate div {
   font-size: 27px;
   font-weight: bold;
+}
+.friendRequestBox {
+  margin-top: 20px;
+  padding: 2px;
+  border: solid 2px #7e98df;
+  border-radius: 10px;
+}
+.friendRequestBox:hover {
+  background-color: #7e98df;
+  color: black;
+  border: black 3px solid;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+}
+.friendRequestBox img {
+  border-radius: 15px;
+  width: 100px;
+  height: 100px;
 }
 </style>
