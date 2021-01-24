@@ -96,7 +96,7 @@
               v-for="(item, index) in friendList"
               :key="index"
             >
-              <b-container fluid>
+              <b-container fluid @click="createRoom(item.user_id)">
                 <b-row style="text-align:center">
                   <b-col>
                     <img
@@ -120,6 +120,7 @@
         </b-modal>
       </div>
     </div>
+    {{ chatRoom }}
   </div>
 </template>
 
@@ -135,18 +136,40 @@ export default {
   },
   created() {
     this.getFriendList(this.user.user_id);
+    this.getChatRoom(this.user.user_id);
   },
   computed: {
     ...mapGetters({
       user: "setUser",
+      chatRoom: "getChatRoom",
       friendList: "getterFriendList"
     })
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapActions(["changeMode", "logout", "getUserByIds", "getFriendList"]),
+    ...mapActions([
+      "changeMode",
+      "logout",
+      "getUserByIds",
+      "getFriendList",
+      "createRoomChat",
+      "getChatRoom"
+    ]),
     getUserById() {
       this.getUserByIds(this.user.user_id);
+    },
+    createRoom(id) {
+      const setData = {
+        user_a: this.user.user_id,
+        user_b: id
+      };
+      this.createRoomChat(setData)
+        .then(result => {
+          this.$toasted.success(result);
+        })
+        .catch(error => {
+          this.$toasted.error(error);
+        });
     },
     selectMode(param) {
       this.changeMode(param);
