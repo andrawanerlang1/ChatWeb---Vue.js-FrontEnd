@@ -120,16 +120,48 @@
         </b-modal>
       </div>
     </div>
-    {{ chatRoom }}
+    <div class="chatRoomList">
+      <div
+        class="friendRequestBox"
+        v-for="(item, index) in chatRoom"
+        :key="index"
+      >
+        <b-container fluid @click="chatThisUser(item)">
+          <b-row style="text-align:center">
+            <b-col cols="4">
+              <img
+                v-if="!item.user_image"
+                style="width: 100%;height:auto"
+                src="../../assets/icon/profilestock.jpg"/>
+              <img
+                id="imageUploads"
+                style="width: 100%;height:auto"
+                v-if="item.user_image"
+                :src="'http://localhost:3000/user/' + item.user_image"
+            /></b-col>
+            <b-col cols="8" style="text-align:left; margin-top:10px">
+              <div style="font-weight:bold">{{ item.user_name }}</div>
+              <br />
+              <div>Room ID: {{ item.room_id }}</div>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import io from "socket.io-client";
 
 export default {
   data() {
-    return {};
+    return {
+      socket: io("http://localhost:3000"),
+      room: "",
+      oldRoom: ""
+    };
   },
   mounted() {
     this.getUserById();
@@ -137,6 +169,12 @@ export default {
   created() {
     this.getFriendList(this.user.user_id);
     this.getChatRoom(this.user.user_id);
+    this.socket.on("chatMessage", data => {
+      this.pushMessages(data);
+    });
+    this.socket.on("typingMessage", data => {
+      this.pushtyping(data);
+    });
   },
   computed: {
     ...mapGetters({
@@ -147,13 +185,16 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser"]),
+    ...mapMutations(["pushMessages", "pushtyping"]),
     ...mapActions([
       "changeMode",
       "logout",
       "getUserByIds",
       "getFriendList",
       "createRoomChat",
-      "getChatRoom"
+      "getChatRoom",
+      "changeChatActive",
+      "clearChatMode"
     ]),
     getUserById() {
       this.getUserByIds(this.user.user_id);
@@ -166,15 +207,40 @@ export default {
       this.createRoomChat(setData)
         .then(result => {
           this.$toasted.success(result);
+          this.$router.go();
         })
         .catch(error => {
           this.$toasted.error(error);
         });
     },
+    chatThisUser(item) {
+      this.changeChatActive(item);
+      // ==================================
+      const data = item.room_id;
+      if (this.oldRoom) {
+        console.log("sudah pernah masuk ke room " + this.oldRoom);
+        console.log("dan akan masuk ke room " + data);
+        this.socket.emit("changeRoom", {
+          username: this.user.user_name,
+          room: data,
+          oldRoom: this.oldRoom
+        });
+        this.oldRoom = data;
+      } else {
+        console.log("belum pernah masuk ke ruang manapun");
+        console.log("dan akan masuk ke room " + data);
+        this.socket.emit("joinRoom", {
+          username: this.user.user_name,
+          room: data
+        });
+        this.oldRoom = data;
+      }
+    },
     selectMode(param) {
       this.changeMode(param);
     },
     loggingout() {
+      this.clearChatMode();
       this.logout();
     }
   }

@@ -3,7 +3,11 @@ import axios from "axios";
 export default {
   state: {
     chatRoom: [],
-    mode: "chat"
+    chatActive: {},
+    chatMode: false,
+    mode: "chat",
+    messages: [],
+    typing: {}
   },
   mutations: {
     setMode(state, payload) {
@@ -11,11 +15,30 @@ export default {
     },
     setChatRoom(state, payload) {
       state.chatRoom = payload;
+    },
+    setChatActive(state, payload) {
+      state.chatActive = payload;
+    },
+    setChatMode(state, payload) {
+      state.chatMode = payload;
+    },
+    pushMessages(state, payload) {
+      state.messages.push(payload);
+    },
+    pushtyping(state, payload) {
+      state.typing = payload;
     }
   },
   actions: {
     changeMode(context, payload) {
       context.commit("setMode", payload);
+    },
+    changeChatActive(context, payload) {
+      context.commit("setChatActive", payload);
+      context.commit("setChatMode", true);
+    },
+    clearChatMode(context) {
+      context.commit("setChatMode", false);
     },
     createRoomChat(context, payload) {
       console.log(context);
@@ -51,6 +74,18 @@ export default {
     },
     getChatRoom(state) {
       return state.chatRoom;
+    },
+    getterChatActive(state) {
+      return state.chatActive;
+    },
+    getterChatMode(state) {
+      return state.chatMode;
+    },
+    getterMessages(state) {
+      return state.messages;
+    },
+    getterTyping(state) {
+      return state.typing;
     }
   }
 };

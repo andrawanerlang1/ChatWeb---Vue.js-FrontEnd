@@ -7,7 +7,12 @@
         <b-col v-if="mode === 'contact'" md="4" sm="12"><ContactMenu /></b-col>
         <b-col v-if="mode === 'invite'" md="4" sm="12"><InviteMenu /></b-col>
 
-        <b-col md="8" sm="12" class="chatSection"> <ChatSection /> </b-col>
+        <b-col v-if="chatMode" md="8" sm="12" class="chatSection">
+          <ChatSection />
+        </b-col>
+        <b-col v-if="!chatMode" md="8" sm="12" class="noChat">
+          Please select a chat to start messaging
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -26,7 +31,11 @@ export default {
   components: { ChatMenu, ProfileMenu, InviteMenu, ContactMenu, ChatSection },
 
   computed: {
-    ...mapGetters({ user: "setUser", mode: "getMode" })
+    ...mapGetters({
+      user: "setUser",
+      mode: "getMode",
+      chatMode: "getterChatMode"
+    })
   }
 };
 </script>
@@ -34,5 +43,10 @@ export default {
 <style scoped>
 .chatSection {
   padding-top: 20px;
+}
+.noChat {
+  background-color: rgb(230, 224, 224);
+  padding-top: 300px;
+  text-align: center;
 }
 </style>

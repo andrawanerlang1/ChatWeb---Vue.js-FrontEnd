@@ -4,13 +4,20 @@
       <div class="userPlate">
         <div class="imagePlate">
           <img
-            src="../../assets/icon/profilestock.jpg"
+            v-if="!chatActive.user_image"
             style="width:70px;height:70px;border-radius:15px;"
-            alt=""
+            src="../../assets/icon/profilestock.jpg"
+          />
+          <img
+            id="imageUploads"
+            class="imgUpload"
+            style="width:70px;height:70px;border-radius:15px;"
+            v-if="chatActive.user_image"
+            :src="'http://localhost:3000/user/' + chatActive.user_image"
           />
         </div>
         <div class="namePlate" style="margin-top:10px">
-          Nama User
+          {{ chatActive.user_name }}
           <br />
           Online
         </div>
@@ -23,17 +30,46 @@
         />
       </div>
     </div>
+
     <div class="chat-window">
-      ini bagian chat window
       <div class="output">
-        <p v-if="typing.isTyping">
-          <em>{{ typing.username }} is typing a message...</em>
-        </p>
-        <p v-for="(value, index) in messages" :key="index">
-          <strong>{{ value.username }} :</strong>
-          {{ value.message }}
-        </p>
+        <div v-for="(value, index) in messages" :key="index">
+          <div class="leftChat" v-if="value.username === user.user_name">
+            <img
+              class="imageChatRoom"
+              v-if="!user.user_image"
+              src="../../assets/icon/profilestock.jpg"
+            />
+            <img
+              id="imageUploads"
+              class="imageChatRoom"
+              v-if="user.user_image"
+              :src="'http://localhost:3000/user/' + user.user_image"
+            />
+            <span> {{ value.message }}</span>
+          </div>
+
+          <div class="rightChat" v-else>
+            <span> {{ value.message }}</span>
+
+            <img
+              v-if="!chatActive.user_image"
+              class="imageChatRoom"
+              src="../../assets/icon/profilestock.jpg"
+            />
+            <img
+              id="imageUploads"
+              class="imageChatRoom"
+              v-if="chatActive.user_image"
+              :src="'http://localhost:3000/user/' + chatActive.user_image"
+            />
+          </div>
+        </div>
       </div>
+      <br />
+      <p v-if="typing.isTyping" style="text-align:center">
+        <em>{{ typing.username }} is typing a message...</em>
+      </p>
     </div>
     <div class="input-window">
       <input
@@ -48,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import io from "socket.io-client";
 
 export default {
@@ -55,68 +92,53 @@ export default {
   data() {
     return {
       socket: io("http://localhost:3000"),
-      username: "",
-      message: "",
-      messages: [],
-      room: "",
-      oldRoom: "",
-      typing: {
-        isTyping: false
-      }
+      message: ""
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: "setUser",
+      chatActive: "getterChatActive",
+      messages: "getterMessages",
+      typing: "getterTyping"
+    })
   },
   watch: {
     message(value) {
       value
         ? this.socket.emit("typing", {
-            username: this.username,
-            room: this.room,
+            username: this.user.user_name,
+            room: this.chatActive.room_id,
             isTyping: true
           })
         : this.socket.emit("typing", {
-            room: this.room,
+            room: this.chatActive.room_id,
             isTyping: false
           });
     }
   },
-  created() {
-    this.socket.on("chatMessage", data => {
-      this.messages.push(data);
-    });
-    this.socket.on("typingMessage", data => {
-      this.typing = data;
-    });
-  },
   methods: {
+    ...mapGetters(["setUser", "getterChatActive"]),
     sendMessage() {
       const setData = {
-        username: this.username,
+        username: this.user.user_name,
         message: this.message,
-        room: this.room
+        room: this.chatActive.room_id
       };
       this.socket.emit("roomMessage", setData);
+
+      //kode untuk kirim message ke DATABASE message ==============================================
+      const dataMessage = {
+        room_id: this.chatActive.room_id,
+        sender: this.user.user_id,
+        receiver: this.chatActive.user_id,
+        message: this.message
+      };
+      console.log("ini msg ke database");
+      console.log(dataMessage);
+
+      // ========================================================
       this.message = "";
-    },
-    selectRoom(data) {
-      console.log(data);
-      if (this.oldRoom) {
-        console.log("sudah pernah masuk ke room " + this.oldRoom);
-        console.log("dan akan masuk ke room " + data);
-        this.socket.emit("changeRoom", {
-          username: this.username,
-          room: data,
-          oldRoom: this.oldRoom
-        });
-        this.oldRoom = data;
-      } else {
-        console.log("belum pernah masuk ke ruang manapun");
-        console.log("dan akan masuk ke room " + data);
-        this.socket.emit("joinRoom", {
-          username: this.username,
-          room: data
-        });
-        this.oldRoom = data;
-      }
     }
   }
 };
@@ -129,7 +151,37 @@ export default {
   width: 100%;
 }
 .chat-window {
-  height: 500px;
+  height: 800px;
+  padding: 20px;
+  overflow: auto;
+}
+.chat-window::-webkit-scrollbar {
+  display: none;
+}
+.leftChat {
+  color: white;
+}
+.leftChat span {
+  background-color: #7e98df;
+  padding: 10px;
+  border-radius: 15px 15px 15px 0px;
+}
+.rightChat {
+  color: white;
+  text-align: right;
+}
+.rightChat span {
+  background-color: #7e98df;
+  border-radius: 15px 15px 0px 15px;
+  padding: 10px;
+}
+.imageChatRoom {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 .profileSection {
   background-color: white;
