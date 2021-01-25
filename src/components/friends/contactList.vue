@@ -69,7 +69,7 @@
         @click="acceptFriendClick(friendReqs[userIndex].user_id)"
         >Accept</b-button
       >
-      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')"
+      <b-button class="mt-3" block @click="$bvModal.hide('modalAcceptFriend')"
         >Cancel</b-button
       >
     </b-modal>
@@ -80,7 +80,7 @@
         v-for="(item, index) in friendList"
         :key="index"
       >
-        <b-container fluid>
+        <b-container fluid @click="ModalDelete(index)">
           <b-row style="text-align:center">
             <b-col>
               <img
@@ -100,6 +100,42 @@
           </b-row>
         </b-container>
       </div>
+      <b-modal id="modalDeleteFriend" hide-footer>
+        <template #modal-title>
+          Delete this user from friendlist??
+        </template>
+        <div class="d-block text-center">
+          <img
+            v-if="!friendList[friendIndex].user_image"
+            style="width:100px;height:100px"
+            src="../../assets/icon/profilestock.jpg"
+          />
+          <img
+            id="imageUploads"
+            style="width:100px;height:100px"
+            class="imgUpload"
+            v-if="friendList[friendIndex].user_image"
+            :src="
+              'http://localhost:3000/user/' + friendList[friendIndex].user_image
+            "
+          />
+          <br />
+          <div>
+            {{ friendList[friendIndex].user_name }} <br />
+            {{ friendList[friendIndex].user_email }}
+          </div>
+        </div>
+        <b-button
+          class="mt-3"
+          variant="danger"
+          block
+          @click="deleteFriendClick(friendList[friendIndex].user_id)"
+          >Delete</b-button
+        >
+        <b-button class="mt-3" block @click="$bvModal.hide('modalDeleteFriend')"
+          >Cancel</b-button
+        >
+      </b-modal>
     </div>
   </div>
 </template>
@@ -112,7 +148,8 @@ export default {
     return {
       type: "invite",
       searchParam: null,
-      userIndex: 0
+      userIndex: 0,
+      friendIndex: 0
     };
   },
   created() {
@@ -133,7 +170,8 @@ export default {
       "getFriendReqs",
       "getFriendList",
       "clearFriends",
-      "changeMode"
+      "changeMode",
+      "deleteFriends"
     ]),
     async acceptFriendClick(id) {
       const setData = { user_id: this.user.user_id, friend_id: id };
@@ -143,10 +181,18 @@ export default {
       await this.acceptFriends(setDataReverse);
       this.$router.go();
     },
+    deleteFriendClick(id) {
+      const setData = { user_id: this.user.user_id, friend_id: id };
+      this.deleteFriends(setData);
+      this.$router.go();
+    },
     showModal(index) {
       this.userIndex = index;
-      console.log(index);
       this.$bvModal.show("modalAcceptFriend");
+    },
+    ModalDelete(index) {
+      this.friendIndex = index;
+      this.$bvModal.show("modalDeleteFriend");
     },
     goChat() {
       this.clearFriends();

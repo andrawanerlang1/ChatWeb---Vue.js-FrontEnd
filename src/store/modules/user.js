@@ -86,6 +86,22 @@ export default {
           });
       });
     },
+    deleteFriends(context, payload) {
+      console.log(context);
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(
+            `http://${process.env.VUE_APP_URL}/friend/delete?user_id=${payload.user_id}&friend_id=${payload.friend_id}`
+          )
+          .then(result => {
+            resolve(result.data.msg);
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error.response.data.msg);
+          });
+      });
+    },
     acceptFriends(context, payload) {
       console.log(context);
       return new Promise((resolve, reject) => {

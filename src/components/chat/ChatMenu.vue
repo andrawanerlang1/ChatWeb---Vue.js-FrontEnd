@@ -165,7 +165,7 @@ export default {
     };
   },
   mounted() {
-    this.getUserById();
+    this.getUserById(this.user.user_id);
   },
   created() {
     this.getFriendList(this.user.user_id);
@@ -173,7 +173,7 @@ export default {
     this.socket.on("chatMessage", data => {
       if (data.message) {
         this.pushMessages(data);
-      } else {
+      } else if (data.notif) {
         this.$toasted.success("New message from " + data.username);
       }
     });
@@ -194,7 +194,12 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapMutations(["pushMessages", "pushtyping", "clearMessages"]),
+    ...mapMutations([
+      "pushMessages",
+      "pushtyping",
+      "clearMessages",
+      "pushOnlineUser"
+    ]),
     ...mapActions([
       "changeMode",
       "logout",

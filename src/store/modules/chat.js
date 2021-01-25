@@ -79,7 +79,10 @@ export default {
         axios
           .get(`http://${process.env.VUE_APP_URL}/chat/message/${payload}`)
           .then(result => {
-            context.commit("setMessagesHistory", result.data.data);
+            const historyMessage = result.data.data.slice(
+              Math.max(result.data.data.length - 5, 0)
+            );
+            context.commit("setMessagesHistory", historyMessage);
             resolve(result);
           })
           .catch(error => {

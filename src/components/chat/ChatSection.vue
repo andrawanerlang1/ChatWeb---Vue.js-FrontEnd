@@ -163,7 +163,8 @@ export default {
       this.socket.emit("roomMessage", setData);
       const sendNotif = {
         username: this.user.user_name,
-        room: this.chatActive.user_id
+        room: this.chatActive.user_id,
+        notif: true
       };
       this.socket.emit("roomMessage", sendNotif);
 
