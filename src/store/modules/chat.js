@@ -7,6 +7,7 @@ export default {
     chatMode: false,
     mode: "chat",
     messages: [],
+    messagesHistory: [],
     typing: {}
   },
   mutations: {
@@ -24,6 +25,13 @@ export default {
     },
     pushMessages(state, payload) {
       state.messages.push(payload);
+    },
+    setMessagesHistory(state, payload) {
+      state.messagesHistory = payload;
+    },
+    clearMessages(state) {
+      state.messages = [];
+      state.messagesHistory = [];
     },
     pushtyping(state, payload) {
       state.typing = payload;
@@ -65,6 +73,32 @@ export default {
             reject(error.response.data.msg);
           });
       });
+    },
+    getMessagesHistory(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://${process.env.VUE_APP_URL}/chat/message/${payload}`)
+          .then(result => {
+            context.commit("setMessagesHistory", result.data.data);
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error.response.data.msg);
+          });
+      });
+    },
+    sendMessages(context, payload) {
+      console.log(context);
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`http://${process.env.VUE_APP_URL}/chat/message`, payload)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error.response.data.msg);
+          });
+      });
     }
   },
 
@@ -83,6 +117,9 @@ export default {
     },
     getterMessages(state) {
       return state.messages;
+    },
+    getterMessagesHistory(state) {
+      return state.messagesHistory;
     },
     getterTyping(state) {
       return state.typing;

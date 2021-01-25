@@ -131,12 +131,12 @@
             <b-col cols="4">
               <img
                 v-if="!item.user_image"
-                style="width: 100%;height:auto"
+                style="width:80px;height:80px"
                 src="../../assets/icon/profilestock.jpg"/>
               <img
                 id="imageUploads"
-                style="width: 100%;height:auto"
                 v-if="item.user_image"
+                style="width:80px;height:80px"
                 :src="'http://localhost:3000/user/' + item.user_image"
             /></b-col>
             <b-col cols="8" style="text-align:left; margin-top:10px">
@@ -185,7 +185,7 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapMutations(["pushMessages", "pushtyping"]),
+    ...mapMutations(["pushMessages", "pushtyping", "clearMessages"]),
     ...mapActions([
       "changeMode",
       "logout",
@@ -194,7 +194,8 @@ export default {
       "createRoomChat",
       "getChatRoom",
       "changeChatActive",
-      "clearChatMode"
+      "clearChatMode",
+      "getMessagesHistory"
     ]),
     getUserById() {
       this.getUserByIds(this.user.user_id);
@@ -218,8 +219,8 @@ export default {
       // ==================================
       const data = item.room_id;
       if (this.oldRoom) {
-        console.log("sudah pernah masuk ke room " + this.oldRoom);
-        console.log("dan akan masuk ke room " + data);
+        this.clearMessages();
+        this.getMessagesHistory(data);
         this.socket.emit("changeRoom", {
           username: this.user.user_name,
           room: data,
@@ -227,8 +228,8 @@ export default {
         });
         this.oldRoom = data;
       } else {
-        console.log("belum pernah masuk ke ruang manapun");
-        console.log("dan akan masuk ke room " + data);
+        this.clearMessages();
+        this.getMessagesHistory(data);
         this.socket.emit("joinRoom", {
           username: this.user.user_name,
           room: data

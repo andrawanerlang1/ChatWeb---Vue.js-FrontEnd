@@ -32,9 +32,10 @@
     </div>
 
     <div class="chat-window">
-      <div class="output">
-        <div v-for="(value, index) in messages" :key="index">
-          <div class="leftChat" v-if="value.username === user.user_name">
+      <div class="history">
+        <div v-for="(value, index) in messagesHistory" :key="index">
+          <div class="leftChat" v-if="value.user_name === user.user_name">
+            <span> {{ value.message }}</span>
             <img
               class="imageChatRoom"
               v-if="!user.user_image"
@@ -46,12 +47,9 @@
               v-if="user.user_image"
               :src="'http://localhost:3000/user/' + user.user_image"
             />
-            <span> {{ value.message }}</span>
           </div>
 
           <div class="rightChat" v-else>
-            <span> {{ value.message }}</span>
-
             <img
               v-if="!chatActive.user_image"
               class="imageChatRoom"
@@ -63,6 +61,40 @@
               v-if="chatActive.user_image"
               :src="'http://localhost:3000/user/' + chatActive.user_image"
             />
+            <span> {{ value.message }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="output">
+        <div v-for="(value, index) in messages" :key="index">
+          <div class="leftChat" v-if="value.username === user.user_name">
+            <span> {{ value.message }}</span>
+            <img
+              class="imageChatRoom"
+              v-if="!user.user_image"
+              src="../../assets/icon/profilestock.jpg"
+            />
+            <img
+              id="imageUploads"
+              class="imageChatRoom"
+              v-if="user.user_image"
+              :src="'http://localhost:3000/user/' + user.user_image"
+            />
+          </div>
+
+          <div class="rightChat" v-else>
+            <img
+              v-if="!chatActive.user_image"
+              class="imageChatRoom"
+              src="../../assets/icon/profilestock.jpg"
+            />
+            <img
+              id="imageUploads"
+              class="imageChatRoom"
+              v-if="chatActive.user_image"
+              :src="'http://localhost:3000/user/' + chatActive.user_image"
+            />
+            <span> {{ value.message }}</span>
           </div>
         </div>
       </div>
@@ -84,7 +116,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import io from "socket.io-client";
 
 export default {
@@ -100,7 +132,8 @@ export default {
       user: "setUser",
       chatActive: "getterChatActive",
       messages: "getterMessages",
-      typing: "getterTyping"
+      typing: "getterTyping",
+      messagesHistory: "getterMessagesHistory"
     })
   },
   watch: {
@@ -119,6 +152,8 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser", "getterChatActive"]),
+    ...mapActions(["sendMessages"]),
+
     sendMessage() {
       const setData = {
         username: this.user.user_name,
@@ -134,8 +169,7 @@ export default {
         receiver: this.chatActive.user_id,
         message: this.message
       };
-      console.log("ini msg ke database");
-      console.log(dataMessage);
+      this.sendMessages(dataMessage);
 
       // ========================================================
       this.message = "";
@@ -151,7 +185,7 @@ export default {
   width: 100%;
 }
 .chat-window {
-  height: 800px;
+  height: 500px;
   padding: 20px;
   overflow: auto;
 }
@@ -160,19 +194,19 @@ export default {
 }
 .leftChat {
   color: white;
+  text-align: right;
 }
 .leftChat span {
   background-color: #7e98df;
   padding: 10px;
-  border-radius: 15px 15px 15px 0px;
+  border-radius: 15px 15px 0px 15px;
 }
 .rightChat {
   color: white;
-  text-align: right;
 }
 .rightChat span {
   background-color: #7e98df;
-  border-radius: 15px 15px 0px 15px;
+  border-radius: 15px 15px 15px 0px;
   padding: 10px;
 }
 .imageChatRoom {
