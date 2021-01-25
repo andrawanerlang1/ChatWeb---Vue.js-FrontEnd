@@ -131,18 +131,19 @@
             <b-col cols="4">
               <img
                 v-if="!item.user_image"
-                style="width:80px;height:80px"
+                style="width:60px;height:60px"
                 src="../../assets/icon/profilestock.jpg"/>
               <img
                 id="imageUploads"
                 v-if="item.user_image"
-                style="width:80px;height:80px"
+                style="width:60px;height:60px"
                 :src="'http://localhost:3000/user/' + item.user_image"
             /></b-col>
             <b-col cols="8" style="text-align:left; margin-top:10px">
               <div style="font-weight:bold">{{ item.user_name }}</div>
+
+              <em> {{ item.user_bio }} </em>
               <br />
-              <div>Room ID: {{ item.room_id }}</div>
             </b-col>
           </b-row>
         </b-container>
@@ -170,10 +171,18 @@ export default {
     this.getFriendList(this.user.user_id);
     this.getChatRoom(this.user.user_id);
     this.socket.on("chatMessage", data => {
-      this.pushMessages(data);
+      if (data.message) {
+        this.pushMessages(data);
+      } else {
+        this.$toasted.success("New message from " + data.username);
+      }
     });
     this.socket.on("typingMessage", data => {
       this.pushtyping(data);
+    });
+    this.socket.emit("joinRoom", {
+      username: this.user.user_name,
+      room: this.user.user_id
     });
   },
   computed: {

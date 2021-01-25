@@ -161,6 +161,11 @@ export default {
         room: this.chatActive.room_id
       };
       this.socket.emit("roomMessage", setData);
+      const sendNotif = {
+        username: this.user.user_name,
+        room: this.chatActive.user_id
+      };
+      this.socket.emit("roomMessage", sendNotif);
 
       //kode untuk kirim message ke DATABASE message ==============================================
       const dataMessage = {
@@ -170,7 +175,6 @@ export default {
         message: this.message
       };
       this.sendMessages(dataMessage);
-
       // ========================================================
       this.message = "";
     }
