@@ -1,6 +1,7 @@
 <template>
   <div class="chat">
     <div class="profileSection">
+      <div class="userPlate" @click="showProfile">
         <div class="imagePlate">
           <img
             v-if="!chatActive.user_image"
