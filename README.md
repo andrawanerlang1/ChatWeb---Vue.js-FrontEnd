@@ -7,7 +7,7 @@
     <a href="https://github.com/arkbootcamp/week7-web6-intermediateFrontend">Request Feature</a>
   </p>
 
-![Image Banner](https://raw.githubusercontent.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/blob/master/webchat.PNG)
+![Image Banner](https://raw.githubusercontent.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/master/webchat.PNG)
 
 ## About The Project
 
