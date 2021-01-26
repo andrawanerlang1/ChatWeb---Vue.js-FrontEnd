@@ -1,7 +1,6 @@
 <template>
   <div class="chat">
     <div class="profileSection">
-      <div class="userPlate">
         <div class="imagePlate">
           <img
             v-if="!chatActive.user_image"
@@ -30,6 +29,49 @@
         />
       </div>
     </div>
+
+    <!-- <b-modal id="modalFriendProfile" hide-footer>
+      <template #modal-title>
+        {{ userByIdFriend[0].user_name }}'s profile page
+      </template>
+      <div class="d-block text-center" style="font-family:rubik">
+        <img
+          v-if="!userByIdFriend[0].user_image"
+          style="width:100px;height:100px"
+          src="../../assets/icon/profilestock.jpg"
+        />
+        <img
+          id="imageUploads"
+          style="width:100px;height:100px; border-radius:15px;margin-bottom:20px"
+          class="imgUpload"
+          v-if="userByIdFriend[0].user_image"
+          :src="'http://localhost:3000/user/' + userByIdFriend[0].user_image"
+        />
+        <br />
+        <div>
+          <b> {{ userByIdFriend[0].user_name }} </b> <br />
+          {{ userByIdFriend[0].user_email }}
+        </div>
+        <div>
+          <em> {{ userByIdFriend[0].user_bio }} </em>
+        </div>
+        <div>
+          My Location :
+          {{ userByIdFriend[0].user_lat }} , {{ userByIdFriend[0].user_lng }}
+          <GmapMap
+            :center="coordinate"
+            :zoom="10"
+            map-type-id="terrain"
+            class="gmap"
+          >
+            <GmapMarker
+              :position="coordinate"
+              icon="https://img.icons8.com/color/48/000000/map-pin.png"
+            />
+          </GmapMap>
+        </div>
+      </div>
+    </b-modal> -->
 
     <div class="chat-window">
       <div class="history">
@@ -104,13 +146,15 @@
       </p>
     </div>
     <div class="input-window">
-      <input
-        class="message"
-        v-model="message"
-        type="text"
-        placeholder="Message"
-      />
-      <button class="send" @click="sendMessage">Send</button>
+      <form v-on:submit.prevent="sendMessage">
+        <input
+          class="message"
+          v-model="message"
+          type="text"
+          placeholder="Type your message"
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   </div>
 </template>
@@ -124,7 +168,11 @@ export default {
   data() {
     return {
       socket: io("http://localhost:3000"),
-      message: ""
+      message: "",
+      coordinate: {
+        lat: 10,
+        lng: 10
+      }
     };
   },
   computed: {
@@ -133,7 +181,8 @@ export default {
       chatActive: "getterChatActive",
       messages: "getterMessages",
       typing: "getterTyping",
-      messagesHistory: "getterMessagesHistory"
+      messagesHistory: "getterMessagesHistory",
+      userByIdFriend: "getterUserByIdFriend"
     })
   },
   watch: {
@@ -152,7 +201,7 @@ export default {
   },
   methods: {
     ...mapGetters(["setUser", "getterChatActive"]),
-    ...mapActions(["sendMessages"]),
+    ...mapActions(["sendMessages", "getUserByIdFriend", "changeMode"]),
 
     sendMessage() {
       const setData = {
@@ -178,6 +227,11 @@ export default {
       this.sendMessages(dataMessage);
       // ========================================================
       this.message = "";
+    },
+    async showProfile() {
+      const id = this.chatActive.user_id;
+      await this.getUserByIdFriend(id);
+      await this.changeMode("friendProfile");
     }
   }
 };
@@ -233,11 +287,36 @@ export default {
   display: flex;
   justify-content: left;
 }
+.userPlate:hover {
+  background-color: #7e98df;
+  border-radius: 15px;
+  padding: 5px;
+  border: 1px solid black;
+  color: white;
+}
 .userPlate div {
   margin-right: 20px;
 }
 .input-window {
   background-color: white;
   padding: 20px;
+  width: 100%;
+}
+.input-window input {
+  width: 85%;
+  border: 0px;
+  background-color: rgb(233, 227, 227);
+  height: 50px;
+  padding: 10px;
+  border-radius: 15px;
+  margin-right: 5%;
+}
+.input-window button {
+  background-color: #7e98df;
+  color: white;
+  font-weight: bold;
+  border-radius: 15px;
+  border: 0px;
+  padding: 10px;
 }
 </style>

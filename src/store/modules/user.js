@@ -4,7 +4,8 @@ export default {
   state: {
     friend: {},
     friendReqs: [],
-    friendList: []
+    friendList: [],
+    userByIdFriend: {}
   },
   mutations: {
     setFriend(state, payload) {
@@ -18,6 +19,9 @@ export default {
     },
     clearFriend(state) {
       state.friend = {};
+    },
+    setUserByIdFriend(state, payload) {
+      state.userByIdFriend = payload;
     }
   },
   actions: {
@@ -149,6 +153,22 @@ export default {
           });
       });
     },
+    getUserByIdFriend(context, payload) {
+      console.log(context);
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://${process.env.VUE_APP_URL}/user/byId/${payload}`)
+          .then(result => {
+            console.log(result.data.data);
+            context.commit("setUserByIdFriend", result.data.data);
+            resolve(result.data.data);
+          })
+          .catch(error => {
+            console.log(error.response);
+            reject(error.response.data.msg);
+          });
+      });
+    },
     clearFriends(context) {
       context.commit("clearFriend");
     }
@@ -162,6 +182,9 @@ export default {
     },
     getterFriendReqs(state) {
       return state.friendReqs;
+    },
+    getterUserByIdFriend(state) {
+      return state.userByIdFriend;
     }
   }
 };

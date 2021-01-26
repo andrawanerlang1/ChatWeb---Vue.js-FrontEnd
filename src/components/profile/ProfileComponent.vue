@@ -108,7 +108,7 @@
       <div class="setting">
         Settings
       </div>
-      <button class="changePassword">
+      <button class="changePassword" @click="$bvModal.show('modalPassword')">
         <img
           src="../../assets/icon/lock.png"
           style="margin-right:10px"
@@ -117,6 +117,24 @@
         Change Password
       </button>
     </div>
+    <b-modal id="modalPassword" hide-footer>
+      <template #modal-title>
+        Input New Password
+      </template>
+      <b-form @submit.prevent="changePassword">
+        <b-form-input
+          type="password"
+          v-model="newPassword"
+          placeholder="Input New Password"
+        ></b-form-input>
+        <b-form-input
+          type="password"
+          v-model="confirmPassword"
+          placeholder="Confirm New Password"
+        ></b-form-input>
+        <button type="submit">Change Password</button>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -131,7 +149,9 @@ export default {
       coordinate: {
         lat: 10,
         lng: 10
-      }
+      },
+      newPassword: null,
+      confirmPassword: null
     };
   },
   created() {
@@ -228,6 +248,13 @@ export default {
         .catch(error => {
           this.$toasted.error(error.data.msg);
         });
+    },
+    changePassword() {
+      if (this.confirmPassword !== this.newPassword) {
+        this.$toasted.error("New and Confirm password does not match!");
+      } else {
+        this.$toasted.success("Password Updated");
+      }
     }
   }
 };
