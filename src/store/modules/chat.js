@@ -80,7 +80,7 @@ export default {
           .get(`http://${process.env.VUE_APP_URL}/chat/message/${payload}`)
           .then(result => {
             const historyMessage = result.data.data.slice(
-              Math.max(result.data.data.length - 5, 0)
+              Math.max(result.data.data.length - 200, 0)
             );
             context.commit("setMessagesHistory", historyMessage);
             resolve(result);
