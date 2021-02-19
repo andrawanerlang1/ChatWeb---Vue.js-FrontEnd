@@ -7,7 +7,7 @@
     <a href="https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/pulls">Request Feature</a>
   </p>
 
-![Image Banner](https://raw.githubusercontent.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/master/webchat.PNG)
+![Image Banner](https://raw.githubusercontent.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/master/webchat.jpg)
 
 ## About The Project
 
