@@ -2,17 +2,16 @@
   <p align="center">
     <a href="link_deploy">View Demo</a>
     ·
-    <a href="https://github.com/arkbootcamp/week7-web6-intermediateFrontend">Report Bug</a>
+    <a href="https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/issues">Report Bug</a>
     ·
-    <a href="https://github.com/arkbootcamp/week7-web6-intermediateFrontend">Request Feature</a>
+    <a href="https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/pulls">Request Feature</a>
   </p>
 
 ![Image Banner](https://raw.githubusercontent.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/master/webchat.PNG)
 
 ## About The Project
 
-This project is created for requirement in completing Arkademy FullStack Web Developer Bootcamp.
-This website allow users to interact with each other such as sending friends invitation, and chat with one and another.
+This website is a web-based chatting app so user can send and receive messages with one another. This website aslo has maps feature using google maps so user could set their location within their profile.
 
 ## Built With
 
@@ -23,7 +22,7 @@ This website allow users to interact with each other such as sending friends inv
 
 1. <a href="https://nodejs.org/en/download/">Node Js</a>
 2. Node_modules `npm install` or `yarn install`
-3. Backend API #nama_projek [`here`](https://github.com/arkbootcamp/week4-web3-express)
+3. Backend API #ChatWeb---Express.js-BackEnd [`here`](https://github.com/andrawanerlang1/ChatWeb---Express.js-BackEnd)
 
 ## Getting Started
 
