@@ -45,7 +45,9 @@
             @click="loggingout"
             variant="primary"
             class="dropOption"
-            ><img src="../../assets/icon/logout.png" />Logout</b-dropdown-item
+            ><img
+              src="../../assets/icon/logoutBlue.png"
+            />Logout</b-dropdown-item
           >
         </b-dropdown>
       </div>
@@ -53,8 +55,7 @@
     <div class="profileImage">
       <img v-if="!user.user_image" src="../../assets/icon/profilestock.jpg" />
       <img
-        id="imageUploads"
-        class="imgUpload"
+        class="imgRoom"
         v-if="user.user_image"
         :src="'http://localhost:3000/user/' + user.user_image"
       />
@@ -101,9 +102,9 @@
                   <b-col>
                     <img
                       v-if="!item.user_image"
+                      class="imgUpload"
                       src="../../assets/icon/profilestock.jpg"/>
                     <img
-                      id="imageUploads"
                       class="imgUpload"
                       v-if="item.user_image"
                       :src="'http://localhost:3000/user/' + item.user_image"
@@ -128,7 +129,7 @@
       >
         <b-container fluid @click="chatThisUser(item)">
           <b-row style="text-align:center">
-            <b-col cols="4">
+            <b-col cols="12" sm="3" md="12" lg="3">
               <img
                 v-if="!item.user_image"
                 style="width:60px;height:60px"
@@ -139,11 +140,29 @@
                 style="width:60px;height:60px"
                 :src="'http://localhost:3000/user/' + item.user_image"
             /></b-col>
-            <b-col cols="8" style="text-align:left; margin-top:10px">
+            <b-col
+              cols="8"
+              sm="6"
+              md="8"
+              lg="6"
+              style="text-align:left; margin-top:10px"
+            >
               <div style="font-weight:bold">{{ item.user_name }}</div>
-
-              <em> {{ item.user_bio }} </em>
+              <div>
+                <em> {{ item.message.slice(0, 15) }} . . </em>
+              </div>
               <br />
+            </b-col>
+            <b-col
+              cols="4"
+              sm="3"
+              md="4"
+              lg="3"
+              style="text-align:right; margin-top:10px"
+            >
+              <div>
+                {{ item.created_at.slice(11, 16) }}
+              </div>
             </b-col>
           </b-row>
         </b-container>
@@ -173,8 +192,11 @@ export default {
     this.socket.on("chatMessage", data => {
       if (data.message) {
         this.pushMessages(data);
+        this.getChatRoom(this.user.user_id);
       } else if (data.notif) {
-        this.$toasted.success("New message from " + data.username);
+        this.$toasted.success("New message from " + data.username, {
+          duration: 1000
+        });
       }
     });
     this.socket.on("typingMessage", data => {

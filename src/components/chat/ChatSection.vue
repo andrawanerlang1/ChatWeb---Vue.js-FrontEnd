@@ -31,49 +31,6 @@
       </div>
     </div>
 
-    <!-- <b-modal id="modalFriendProfile" hide-footer>
-      <template #modal-title>
-        {{ userByIdFriend[0].user_name }}'s profile page
-      </template>
-      <div class="d-block text-center" style="font-family:rubik">
-        <img
-          v-if="!userByIdFriend[0].user_image"
-          style="width:100px;height:100px"
-          src="../../assets/icon/profilestock.jpg"
-        />
-        <img
-          id="imageUploads"
-          style="width:100px;height:100px; border-radius:15px;margin-bottom:20px"
-          class="imgUpload"
-          v-if="userByIdFriend[0].user_image"
-          :src="'http://localhost:3000/user/' + userByIdFriend[0].user_image"
-        />
-        <br />
-        <div>
-          <b> {{ userByIdFriend[0].user_name }} </b> <br />
-          {{ userByIdFriend[0].user_email }}
-        </div>
-        <div>
-          <em> {{ userByIdFriend[0].user_bio }} </em>
-        </div>
-        <div>
-          My Location :
-          {{ userByIdFriend[0].user_lat }} , {{ userByIdFriend[0].user_lng }}
-          <GmapMap
-            :center="coordinate"
-            :zoom="10"
-            map-type-id="terrain"
-            class="gmap"
-          >
-            <GmapMarker
-              :position="coordinate"
-              icon="https://img.icons8.com/color/48/000000/map-pin.png"
-            />
-          </GmapMap>
-        </div>
-      </div>
-    </b-modal> -->
-
     <div class="chat-window">
       <div class="history">
         <div v-for="(value, index) in messagesHistory" :key="index">
@@ -143,7 +100,9 @@
       </div>
       <br />
       <p v-if="typing.isTyping" style="text-align:center">
-        <em>{{ typing.username }} is typing a message...</em>
+        <em v-if="typing.username === chatActive.user_name"
+          >{{ typing.username }} is typing a message...</em
+        >
       </p>
     </div>
     <div class="input-window">
@@ -289,11 +248,10 @@ export default {
   justify-content: left;
 }
 .userPlate:hover {
-  background-color: #7e98df;
+  font-weight: bold;
+  color: #7e98df;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.19);
   border-radius: 15px;
-  padding: 5px;
-  border: 1px solid black;
-  color: white;
 }
 .userPlate div {
   margin-right: 20px;

@@ -2,11 +2,19 @@
   <div class="home">
     <b-container fluid>
       <b-row>
-        <b-col v-if="mode === 'chat'" md="4" sm="12"><ChatMenu /></b-col>
-        <b-col v-if="mode === 'profile'" md="4" sm="12"><ProfileMenu /></b-col>
-        <b-col v-if="mode === 'contact'" md="4" sm="12"><ContactMenu /></b-col>
-        <b-col v-if="mode === 'invite'" md="4" sm="12"><InviteMenu /></b-col>
-        <b-col v-if="mode === 'friendProfile'" md="4" sm="12"
+        <b-col v-if="mode === 'chat'" md="4" sm="12" class="profile">
+          <ChatMenu
+        /></b-col>
+        <b-col v-if="mode === 'profile'" md="4" sm="12" class="profile"
+          ><ProfileMenu
+        /></b-col>
+        <b-col v-if="mode === 'contact'" md="4" sm="12" class="profile"
+          ><ContactMenu
+        /></b-col>
+        <b-col v-if="mode === 'invite'" md="4" sm="12" class="profile"
+          ><InviteMenu
+        /></b-col>
+        <b-col v-if="mode === 'friendProfile'" md="4" sm="12" class="profile"
           ><FriendProfile
         /></b-col>
 
@@ -54,10 +62,16 @@ export default {
 <style scoped>
 .chatSection {
   padding-top: 20px;
+  height: 700px;
 }
 .noChat {
   background-color: rgb(230, 224, 224);
   padding-top: 300px;
   text-align: center;
+  height: 700px;
+}
+.profile {
+  height: 700px;
+  overflow: auto;
 }
 </style>

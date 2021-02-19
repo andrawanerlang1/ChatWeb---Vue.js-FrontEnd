@@ -37,16 +37,11 @@
         >
       </div>
     </div>
-    <b-modal id="modalAcceptFriend" hide-footer>
+    <b-modal id="modalAcceptFriend" v-show="friendReqs" hide-footer>
       <template #modal-title>
         Accept this user as friend?
       </template>
-      <div class="d-block text-center">
-        <img
-          v-if="!friendReqs[userIndex].user_image"
-          style="width:100px;height:100px"
-          src="../../assets/icon/profilestock.jpg"
-        />
+      <!-- <div class="d-block text-center">
         <img
           id="imageUploads"
           style="width:100px;height:100px"
@@ -56,12 +51,18 @@
             'http://localhost:3000/user/' + friendReqs[userIndex].user_image
           "
         />
+        <img
+          v-else
+          style="width:100px;height:100px"
+          src="../../assets/icon/profilestock.jpg"
+        />
+
         <br />
         <div>
           {{ friendReqs[userIndex].user_name }} <br />
           {{ friendReqs[userIndex].user_email }}
         </div>
-      </div>
+      </div> -->
       <b-button
         class="mt-3"
         variant="success"
@@ -104,7 +105,7 @@
         <template #modal-title>
           Delete this user from friendlist??
         </template>
-        <div class="d-block text-center">
+        <!-- <div class="d-block text-center">
           <img
             v-if="!friendList[friendIndex].user_image"
             style="width:100px;height:100px"
@@ -124,7 +125,7 @@
             {{ friendList[friendIndex].user_name }} <br />
             {{ friendList[friendIndex].user_email }}
           </div>
-        </div>
+        </div> -->
         <b-button
           class="mt-3"
           variant="danger"
@@ -152,9 +153,9 @@ export default {
       friendIndex: 0
     };
   },
-  created() {
-    this.getFriendReqs(this.user.user_id);
-    this.getFriendList(this.user.user_id);
+  async created() {
+    await this.getFriendReqs(this.user.user_id);
+    await this.getFriendList(this.user.user_id);
   },
   computed: {
     ...mapGetters({

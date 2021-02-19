@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import store from "../store";
 import Login from "../views/Login.vue";
 import Maps from "../views/Maps.vue";
-import Chat from "../views/Chat.vue";
 import Register from "../views/Register.vue";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
@@ -39,11 +38,6 @@ const routes = [
     path: "/maps",
     name: "Maps",
     component: Maps
-  },
-  {
-    path: "/chat",
-    name: "Chat",
-    component: Chat
   }
 ];
 

@@ -3,8 +3,8 @@ import axios from "axios";
 export default {
   state: {
     friend: {},
-    friendReqs: [],
-    friendList: [],
+    friendReqs: null,
+    friendList: null,
     userByIdFriend: {}
   },
   mutations: {
