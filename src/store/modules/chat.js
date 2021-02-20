@@ -55,7 +55,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_URL}/chat/room`, payload)
+          .post(`https://${process.env.VUE_APP_URL}/chat/room`, payload)
           .then(result => {
             resolve(result.data.msg);
           })
@@ -67,7 +67,7 @@ export default {
     getChatRoom(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/chat/room/${payload}`)
+          .get(`https://${process.env.VUE_APP_URL}/chat/room/${payload}`)
           .then(result => {
             context.commit("setChatRoom", result.data.data);
             resolve(result);
@@ -80,7 +80,7 @@ export default {
     getMessagesHistory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/chat/message/${payload}`)
+          .get(`https://${process.env.VUE_APP_URL}/chat/message/${payload}`)
           .then(result => {
             const historyMessage = result.data.data.slice(
               Math.max(result.data.data.length - 200, 0)
@@ -97,7 +97,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_URL}/chat/message`, payload)
+          .post(`https://${process.env.VUE_APP_URL}/chat/message`, payload)
           .then(result => {
             resolve(result);
           })

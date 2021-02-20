@@ -25,7 +25,7 @@
                 id="imageUploads"
                 class="imgUpload"
                 v-if="item.user_image"
-                :src="`http://${URL}/user/` + item.user_image"
+                :src="`https://${URL}/user/` + item.user_image"
               />
             </b-col>
             <b-col>
@@ -70,7 +70,7 @@
                 id="imageUploads"
                 class="imgUpload"
                 v-if="item.user_image"
-                :src="`http://${URL}/user/` + item.user_image"
+                :src="`https://${URL}/user/` + item.user_image"
             /></b-col>
             <b-col>
               <br />

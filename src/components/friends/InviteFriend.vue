@@ -35,7 +35,7 @@
         id="imageUploads"
         class="imgUpload"
         v-else
-        :src="`http://${URL}/user/` + friend.user_image"
+        :src="`https://${URL}/user/` + friend.user_image"
       />
       <div class="friendName">
         {{ friend.user_name }}
