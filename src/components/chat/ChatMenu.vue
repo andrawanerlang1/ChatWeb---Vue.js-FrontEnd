@@ -60,7 +60,7 @@
       <img
         class="imgRoom"
         v-if="user.user_image"
-        :src="'http://localhost:3000/user/' + user.user_image"
+        :src="`http://${URL}/user/` + user.user_image"
       />
     </div>
     <div class="namePlate">
@@ -110,7 +110,7 @@
                     <img
                       class="imgUpload"
                       v-if="item.user_image"
-                      :src="'http://localhost:3000/user/' + item.user_image"
+                      :src="`http://${URL}/user/` + item.user_image"
                   /></b-col>
                   <b-col>
                     <br />
@@ -141,7 +141,7 @@
                 id="imageUploads"
                 v-if="item.user_image"
                 style="width:60px;height:60px"
-                :src="'http://localhost:3000/user/' + item.user_image"
+                :src="`http://${URL}/user/` + item.user_image"
             /></b-col>
             <b-col
               cols="8"
@@ -181,9 +181,11 @@ import io from "socket.io-client";
 export default {
   data() {
     return {
-      socket: io("http://localhost:3000"),
+      URL: process.env.VUE_APP_URL,
+      socket: io(`http://${process.env.VUE_APP_URL}`),
       room: "",
-      oldRoom: ""
+      oldRoom: "",
+      activeRoom: ""
     };
   },
   mounted() {
@@ -223,7 +225,8 @@ export default {
       "pushMessages",
       "pushtyping",
       "clearMessages",
-      "pushOnlineUser"
+      "pushOnlineUser",
+      "clearChatRoom"
     ]),
     ...mapActions([
       "changeMode",
@@ -257,6 +260,7 @@ export default {
       this.changeChatActive(item);
       // ==================================
       const data = item.room_id;
+      this.activeRoom = data;
       if (this.oldRoom) {
         this.clearMessages();
         this.getMessagesHistory(data);
@@ -281,6 +285,15 @@ export default {
     },
     loggingout() {
       this.clearChatMode();
+      this.clearChatRoom();
+      this.socket.emit("leaveRoom", {
+        username: this.user.user_name,
+        room: this.activeRoom
+      });
+      this.socket.emit("leaveRoom", {
+        username: this.user.user_name,
+        room: this.user.user_id
+      });
       this.logout();
     }
   }

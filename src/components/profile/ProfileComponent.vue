@@ -13,7 +13,7 @@
         id="imageUploads"
         class="imgUpload"
         v-if="user.user_image && !url"
-        :src="'http://localhost:3000/user/' + user.user_image"
+        :src="`http://${URLS}/user/` + user.user_image"
       />
       <img id="imageUpload" class="imgUpload" v-if="url" :src="url" />
       <input
@@ -144,6 +144,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      URLS: process.env.VUE_APP_URL,
       type: "watch",
       url: null,
       coordinate: {

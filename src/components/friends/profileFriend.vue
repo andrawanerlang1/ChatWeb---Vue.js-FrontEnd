@@ -15,8 +15,8 @@
       <img
         id="imageUploads"
         class="imgUpload"
-        v-if="user[0].user_image && !url"
-        :src="'http://localhost:3000/user/' + user[0].user_image"
+        v-if="user[0].user_image"
+        :src="`http://${URL}/user/` + user[0].user_image"
       />
     </div>
     <div class="namePlate">
@@ -69,16 +69,13 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      URL: process.env.VUE_APP_URL,
       type: "watch",
-      url: null,
       coordinate: {
         lat: -6.2399995,
         lng: 107.065767
       }
     };
-  },
-  created() {
-    // this.setCoordinates();
   },
   computed: {
     ...mapGetters({

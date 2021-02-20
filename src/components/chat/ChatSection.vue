@@ -13,7 +13,7 @@
             class="imgUpload"
             style="width:70px;height:70px;border-radius:15px;"
             v-if="chatActive.user_image"
-            :src="'http://localhost:3000/user/' + chatActive.user_image"
+            :src="`http://${URL}/user/` + chatActive.user_image"
           />
         </div>
         <div class="namePlate" style="margin-top:10px">
@@ -45,7 +45,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="user.user_image"
-              :src="'http://localhost:3000/user/' + user.user_image"
+              :src="`http://${URL}/user/` + user.user_image"
             />
           </div>
 
@@ -59,7 +59,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="chatActive.user_image"
-              :src="'http://localhost:3000/user/' + chatActive.user_image"
+              :src="`http://${URL}/user/` + chatActive.user_image"
             />
             <span> {{ value.message }}</span>
           </div>
@@ -78,7 +78,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="user.user_image"
-              :src="'http://localhost:3000/user/' + user.user_image"
+              :src="`http://${URL}/user/` + user.user_image"
             />
           </div>
 
@@ -92,7 +92,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="chatActive.user_image"
-              :src="'http://localhost:3000/user/' + chatActive.user_image"
+              :src="`http://${URL}/user/` + chatActive.user_image"
             />
             <span> {{ value.message }}</span>
           </div>
@@ -127,7 +127,8 @@ export default {
   name: "Chat",
   data() {
     return {
-      socket: io("http://localhost:3000"),
+      URL: process.env.VUE_APP_URL,
+      socket: io(`http://${process.env.VUE_APP_URL}`),
       message: "",
       coordinate: {
         lat: 10,
@@ -177,7 +178,6 @@ export default {
       };
       this.socket.emit("roomMessage", sendNotif);
 
-      //kode untuk kirim message ke DATABASE message ==============================================
       const dataMessage = {
         room_id: this.chatActive.room_id,
         sender: this.user.user_id,
@@ -185,7 +185,6 @@ export default {
         message: this.message
       };
       this.sendMessages(dataMessage);
-      // ========================================================
       this.message = "";
     },
     async showProfile() {

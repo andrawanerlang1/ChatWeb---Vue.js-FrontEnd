@@ -17,6 +17,9 @@ export default {
     setChatRoom(state, payload) {
       state.chatRoom = payload;
     },
+    clearChatRoom(state) {
+      state.chatRoom = [];
+    },
     setChatActive(state, payload) {
       state.chatActive = payload;
     },

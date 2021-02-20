@@ -25,7 +25,7 @@
                 id="imageUploads"
                 class="imgUpload"
                 v-if="item.user_image"
-                :src="'http://localhost:3000/user/' + item.user_image"
+                :src="`http://${URL}/user/` + item.user_image"
               />
             </b-col>
             <b-col>
@@ -41,28 +41,7 @@
       <template #modal-title>
         Accept this user as friend?
       </template>
-      <!-- <div class="d-block text-center">
-        <img
-          id="imageUploads"
-          style="width:100px;height:100px"
-          class="imgUpload"
-          v-if="friendReqs[userIndex].user_image"
-          :src="
-            'http://localhost:3000/user/' + friendReqs[userIndex].user_image
-          "
-        />
-        <img
-          v-else
-          style="width:100px;height:100px"
-          src="../../assets/icon/profilestock.jpg"
-        />
 
-        <br />
-        <div>
-          {{ friendReqs[userIndex].user_name }} <br />
-          {{ friendReqs[userIndex].user_email }}
-        </div>
-      </div> -->
       <b-button
         class="mt-3"
         variant="success"
@@ -91,7 +70,7 @@
                 id="imageUploads"
                 class="imgUpload"
                 v-if="item.user_image"
-                :src="'http://localhost:3000/user/' + item.user_image"
+                :src="`http://${URL}/user/` + item.user_image"
             /></b-col>
             <b-col>
               <br />
@@ -105,27 +84,6 @@
         <template #modal-title>
           Delete this user from friendlist??
         </template>
-        <!-- <div class="d-block text-center">
-          <img
-            v-if="!friendList[friendIndex].user_image"
-            style="width:100px;height:100px"
-            src="../../assets/icon/profilestock.jpg"
-          />
-          <img
-            id="imageUploads"
-            style="width:100px;height:100px"
-            class="imgUpload"
-            v-if="friendList[friendIndex].user_image"
-            :src="
-              'http://localhost:3000/user/' + friendList[friendIndex].user_image
-            "
-          />
-          <br />
-          <div>
-            {{ friendList[friendIndex].user_name }} <br />
-            {{ friendList[friendIndex].user_email }}
-          </div>
-        </div> -->
         <b-button
           class="mt-3"
           variant="danger"
@@ -147,6 +105,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      URL: process.env.VUE_APP_URL,
       type: "invite",
       searchParam: null,
       userIndex: 0,

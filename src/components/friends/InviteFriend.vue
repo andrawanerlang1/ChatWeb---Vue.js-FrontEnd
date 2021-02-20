@@ -35,7 +35,7 @@
         id="imageUploads"
         class="imgUpload"
         v-else
-        :src="'http://localhost:3000/user/' + friend.user_image"
+        :src="`http://${URL}/user/` + friend.user_image"
       />
       <div class="friendName">
         {{ friend.user_name }}
@@ -54,6 +54,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      URL: process.env.VUE_APP_URL,
       type: "invite",
       searchParam: null
     };

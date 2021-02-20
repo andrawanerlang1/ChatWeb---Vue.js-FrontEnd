@@ -32,7 +32,7 @@ This website is a web-based chatting app so user can send and receive messages w
 4. Add .env file at root folder project
 
 ```sh
-VUE_APP_ENDPOINT = localhost:3000
+VUE_APP_URL = localhost:3000
 ```
 
 5. Type `npm run serve`
