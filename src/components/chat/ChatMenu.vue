@@ -60,7 +60,7 @@
       <img
         class="imgRoom"
         v-if="user.user_image"
-        :src="`http://${URL}/user/` + user.user_image"
+        :src="`https://${URL}/user/` + user.user_image"
       />
     </div>
     <div class="namePlate">
@@ -110,7 +110,7 @@
                     <img
                       class="imgUpload"
                       v-if="item.user_image"
-                      :src="`http://${URL}/user/` + item.user_image"
+                      :src="`https://${URL}/user/` + item.user_image"
                   /></b-col>
                   <b-col>
                     <br />
@@ -141,7 +141,7 @@
                 id="imageUploads"
                 v-if="item.user_image"
                 style="width:60px;height:60px"
-                :src="`http://${URL}/user/` + item.user_image"
+                :src="`https://${URL}/user/` + item.user_image"
             /></b-col>
             <b-col
               cols="8"
@@ -182,7 +182,7 @@ export default {
   data() {
     return {
       URL: process.env.VUE_APP_URL,
-      socket: io(`http://${process.env.VUE_APP_URL}`),
+      socket: io(`https://${process.env.VUE_APP_URL}`),
       room: "",
       oldRoom: "",
       activeRoom: ""

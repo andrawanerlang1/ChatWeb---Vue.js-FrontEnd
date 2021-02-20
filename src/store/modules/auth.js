@@ -23,7 +23,7 @@ export default {
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_URL}/user/login`, payload)
+          .post(`https://${process.env.VUE_APP_URL}/user/login`, payload)
           .then(result => {
             context.commit("setUser", result.data.data);
             localStorage.setItem("token", result.data.data.token);
@@ -37,7 +37,7 @@ export default {
     getUserByIds(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/user/byId/${payload}`)
+          .get(`https://${process.env.VUE_APP_URL}/user/byId/${payload}`)
           .then(result => {
             context.commit("setUserById", result.data.data[0]);
             resolve(result);
@@ -52,7 +52,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://${process.env.VUE_APP_URL}/user/edit/${context.state.user.user_id}`,
+            `https://${process.env.VUE_APP_URL}/user/edit/${context.state.user.user_id}`,
             payload
           )
           .then(result => {
@@ -68,7 +68,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://${process.env.VUE_APP_URL}/user/password/${context.state.user.user_id}`,
+            `https://${process.env.VUE_APP_URL}/user/password/${context.state.user.user_id}`,
             payload
           )
           .then(result => {
@@ -83,7 +83,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_URL}/user/register`, payload)
+          .post(`https://${process.env.VUE_APP_URL}/user/register`, payload)
           .then(result => {
             resolve(result);
           })

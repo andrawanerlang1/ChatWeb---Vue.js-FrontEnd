@@ -34,7 +34,7 @@ export default {
         data.append("user_image", user_image);
         axios
           .patch(
-            `http://${process.env.VUE_APP_URL}/user/image/${payload.user_id}`,
+            `https://${process.env.VUE_APP_URL}/user/image/${payload.user_id}`,
             data
           )
           .then(result => {
@@ -50,7 +50,9 @@ export default {
     searchUserEmail(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/user/search?email=${payload}`)
+          .get(
+            `https://${process.env.VUE_APP_URL}/user/search?email=${payload}`
+          )
           .then(result => {
             context.commit("setFriend", result.data.data[0]);
             resolve(result);
@@ -65,7 +67,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://${process.env.VUE_APP_URL}/user/search?number=${payload}`
+            `https://${process.env.VUE_APP_URL}/user/search?number=${payload}`
           )
           .then(result => {
             context.commit("setFriend", result.data.data[0]);
@@ -82,7 +84,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_URL}/friend/invite`, payload)
+          .post(`https://${process.env.VUE_APP_URL}/friend/invite`, payload)
           .then(result => {
             resolve(result.data.msg);
           })
@@ -96,7 +98,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://${process.env.VUE_APP_URL}/friend/delete?user_id=${payload.user_id}&friend_id=${payload.friend_id}`
+            `https://${process.env.VUE_APP_URL}/friend/delete?user_id=${payload.user_id}&friend_id=${payload.friend_id}`
           )
           .then(result => {
             resolve(result.data.msg);
@@ -111,7 +113,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://${process.env.VUE_APP_URL}/friend/accept`, payload)
+          .patch(`https://${process.env.VUE_APP_URL}/friend/accept`, payload)
           .then(result => {
             resolve(result.data.msg);
           })
@@ -125,7 +127,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://${process.env.VUE_APP_URL}/friend/friendRequest/${payload}`
+            `https://${process.env.VUE_APP_URL}/friend/friendRequest/${payload}`
           )
           .then(result => {
             console.log(result.data.data);
@@ -142,7 +144,9 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/friend/friendList/${payload}`)
+          .get(
+            `https://${process.env.VUE_APP_URL}/friend/friendList/${payload}`
+          )
           .then(result => {
             console.log(result.data.data);
             context.commit("setFriendList", result.data.data);
@@ -158,7 +162,7 @@ export default {
       console.log(context);
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_URL}/user/byId/${payload}`)
+          .get(`https://${process.env.VUE_APP_URL}/user/byId/${payload}`)
           .then(result => {
             console.log(result.data.data);
             context.commit("setUserByIdFriend", result.data.data);

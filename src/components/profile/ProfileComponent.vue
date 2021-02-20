@@ -13,7 +13,7 @@
         id="imageUploads"
         class="imgUpload"
         v-if="user.user_image && !url"
-        :src="`http://${URLS}/user/` + user.user_image"
+        :src="`https://${URLS}/user/` + user.user_image"
       />
       <img id="imageUpload" class="imgUpload" v-if="url" :src="url" />
       <input
