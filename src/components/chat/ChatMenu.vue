@@ -37,10 +37,13 @@
             ><img src="../../assets/icon/invite.png" />Invite
             Friends</b-dropdown-item
           >
-          <b-dropdown-item href="#" variant="primary" class="dropOption"
-            ><img src="../../assets/icon/faq.png" />Andtalk
-            Faqs</b-dropdown-item
-          >
+          <b-dropdown-item
+            href="https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd"
+            variant="primary"
+            class="dropOption"
+            ><img src="../../assets/icon/faq.png" />
+            About
+          </b-dropdown-item>
           <b-dropdown-item
             @click="loggingout"
             variant="primary"

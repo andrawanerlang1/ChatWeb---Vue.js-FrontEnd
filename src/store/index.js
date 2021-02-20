@@ -15,7 +15,7 @@ export default new Vuex.Store({
   getters: {},
   plugins: [
     createPersistedState({
-      paths: ["Auth.user", "Chat.mode"]
+      paths: ["Auth.user", "Chat.mode", "User.userByIdFriend"]
     })
   ]
 });

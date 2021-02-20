@@ -19,6 +19,7 @@ export default {
     },
     clearFriend(state) {
       state.friend = {};
+      state.userByIdFriend = {};
     },
     setUserByIdFriend(state, payload) {
       state.userByIdFriend = payload;

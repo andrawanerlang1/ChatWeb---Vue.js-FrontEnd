@@ -43,7 +43,6 @@
 
         <div>Bio</div>
       </div>
-
       <div class="location">
         {{ user[0].user_name }}'s Account Location
         <GmapMap
@@ -86,15 +85,26 @@ export default {
       user: "getterUserByIdFriend"
     })
   },
+  watch: {
+    user: {
+      immediate: true,
+      handler(to) {
+        if (to) {
+          this.setCoordinates();
+        }
+      }
+    }
+  },
   methods: {
     ...mapGetters(["setUser"]),
-    ...mapActions(["changeMode"]),
+    ...mapActions(["changeMode", "clearFriends"]),
     goChat() {
+      this.clearFriends();
       this.changeMode("chat");
     },
     setCoordinates() {
-      this.coordinate.lat = this.user.user_lat;
-      this.coordinate.lng = this.user.user_lng;
+      this.coordinate.lat = this.user[0].user_lat;
+      this.coordinate.lng = this.user[0].user_lng;
     }
   }
 };

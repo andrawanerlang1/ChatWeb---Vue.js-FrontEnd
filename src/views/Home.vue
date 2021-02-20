@@ -36,7 +36,7 @@ import ProfileMenu from "../components/profile/ProfileComponent";
 import InviteMenu from "../components/friends/InviteFriend";
 import ContactMenu from "../components/friends/contactList";
 import FriendProfile from "../components/friends/profileFriend";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -48,13 +48,37 @@ export default {
     ChatSection,
     FriendProfile
   },
-
+  created() {
+    this.$getLocation()
+      .then(coordinates => {
+        const setData = {
+          user_lat: coordinates.lat,
+          user_lng: coordinates.lng
+        };
+        this.updateUsers(setData)
+          .then(result => {
+            console.log(result);
+            this.$toasted.success("Location is uptodate", {
+              duration: 2000
+            });
+          })
+          .catch(error => {
+            this.$toasted.error(error.data.msg);
+          });
+      })
+      .catch(error => {
+        alert(error);
+      });
+  },
   computed: {
     ...mapGetters({
       user: "setUser",
       mode: "getMode",
       chatMode: "getterChatMode"
     })
+  },
+  methods: {
+    ...mapActions(["updateUsers"])
   }
 };
 </script>
