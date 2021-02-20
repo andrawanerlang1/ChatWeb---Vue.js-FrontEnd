@@ -181,8 +181,8 @@ import io from "socket.io-client";
 export default {
   data() {
     return {
-      URL: process.env.VUE_APP_URL,
-      socket: io(`http://${process.env.VUE_APP_URL}`),
+      URL: process.env.VUE_APP_URL + "/fileUploadsApi3",
+      socket: io(`http://${process.env.VUE_APP_SOCKET}`),
       room: "",
       oldRoom: "",
       activeRoom: ""

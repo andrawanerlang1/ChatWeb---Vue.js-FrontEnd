@@ -54,7 +54,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      URL: process.env.VUE_APP_URL,
+      URL: process.env.VUE_APP_URL + "/fileUploadsApi3",
       type: "invite",
       searchParam: null
     };

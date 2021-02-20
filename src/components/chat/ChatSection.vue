@@ -127,8 +127,8 @@ export default {
   name: "Chat",
   data() {
     return {
-      URL: process.env.VUE_APP_URL,
-      socket: io(`http://${process.env.VUE_APP_URL}`),
+      URL: process.env.VUE_APP_URL + "/fileUploadsApi3",
+      socket: io(`http://${process.env.VUE_APP_SOCKET}`),
       message: "",
       coordinate: {
         lat: 10,

@@ -144,7 +144,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      URLS: process.env.VUE_APP_URL,
+      URLS: process.env.VUE_APP_URL + "/fileUploadsApi3",
       type: "watch",
       url: null,
       coordinate: {
