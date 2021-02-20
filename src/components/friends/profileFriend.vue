@@ -16,7 +16,7 @@
         id="imageUploads"
         class="imgUpload"
         v-if="user[0].user_image"
-        :src="`https://${URL}/user/` + user[0].user_image"
+        :src="`http://${URL}/user/` + user[0].user_image"
       />
     </div>
     <div class="namePlate">

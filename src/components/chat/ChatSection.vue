@@ -13,7 +13,7 @@
             class="imgUpload"
             style="width:70px;height:70px;border-radius:15px;"
             v-if="chatActive.user_image"
-            :src="`https://${URL}/user/` + chatActive.user_image"
+            :src="`http://${URL}/user/` + chatActive.user_image"
           />
         </div>
         <div class="namePlate" style="margin-top:10px">
@@ -45,7 +45,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="user.user_image"
-              :src="`https://${URL}/user/` + user.user_image"
+              :src="`http://${URL}/user/` + user.user_image"
             />
           </div>
 
@@ -59,7 +59,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="chatActive.user_image"
-              :src="`https://${URL}/user/` + chatActive.user_image"
+              :src="`http://${URL}/user/` + chatActive.user_image"
             />
             <span> {{ value.message }}</span>
           </div>
@@ -78,7 +78,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="user.user_image"
-              :src="`https://${URL}/user/` + user.user_image"
+              :src="`http://${URL}/user/` + user.user_image"
             />
           </div>
 
@@ -92,7 +92,7 @@
               id="imageUploads"
               class="imageChatRoom"
               v-if="chatActive.user_image"
-              :src="`https://${URL}/user/` + chatActive.user_image"
+              :src="`http://${URL}/user/` + chatActive.user_image"
             />
             <span> {{ value.message }}</span>
           </div>
@@ -128,7 +128,7 @@ export default {
   data() {
     return {
       URL: process.env.VUE_APP_URL,
-      socket: io(`https://${process.env.VUE_APP_URL}`),
+      socket: io(`http://${process.env.VUE_APP_URL}`),
       message: "",
       coordinate: {
         lat: 10,
