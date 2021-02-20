@@ -1,6 +1,6 @@
 <h1 align='center'>Vue JS - #Andra's Web Chat App</h1>
   <p align="center">
-    <a href="link_deploy">View Demo</a>
+    <a href="https://andra-chatweb.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd/issues">Report Bug</a>
     ·
