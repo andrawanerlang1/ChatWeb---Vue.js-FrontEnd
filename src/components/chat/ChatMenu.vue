@@ -182,11 +182,8 @@ export default {
   data() {
     return {
       URL: process.env.VUE_APP_URL + "/fileUploadsApi3",
-      socket: io(`https://${process.env.VUE_APP_SOCKET}`, {
-        withCredentials: true,
-        extraHeaders: {
-          headerChatweb: "abcd"
-        }
+      socket: io.connect(`https://${process.env.VUE_APP_SOCKET}`, {
+        path: "/api3/socket.io"
       }),
       room: "",
       oldRoom: "",
