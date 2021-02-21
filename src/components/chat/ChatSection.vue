@@ -128,7 +128,12 @@ export default {
   data() {
     return {
       URL: process.env.VUE_APP_URL + "/fileUploadsApi3",
-      socket: io(`https://${process.env.VUE_APP_SOCKET}`),
+      socket: io(`https://${process.env.VUE_APP_SOCKET}`, {
+        withCredentials: true,
+        extraHeaders: {
+          headerChatweb: "abcd"
+        }
+      }),
       message: "",
       coordinate: {
         lat: 10,
