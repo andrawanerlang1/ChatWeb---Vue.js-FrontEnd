@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="chat-window">
+    <div class="chat-window" id="chat-window">
       <div class="history">
         <div v-for="(value, index) in messagesHistory" :key="index">
           <div class="leftChat" v-if="value.user_name === user.user_name">
@@ -191,7 +191,15 @@ export default {
       const id = this.chatActive.user_id;
       await this.getUserByIdFriend(id);
       await this.changeMode("friendProfile");
+    },
+    scroll() {
+      document.getElementById(
+        "chat-window"
+      ).scrollTop = document.getElementById("chat-window").scrollHeight;
     }
+  },
+  updated() {
+    this.scroll();
   }
 };
 </script>
