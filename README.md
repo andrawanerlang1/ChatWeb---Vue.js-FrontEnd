@@ -26,7 +26,7 @@ This website is a web-based chatting app so user can send and receive messages w
 
 ## Getting Started
 
-1. Download this Project or you can type `git clone #link_git`
+1. Download this Project or you can type `git clone https://github.com/andrawanerlang1/ChatWeb---Vue.js-FrontEnd.git`
 2. Open app's directory in CMD or Terminal
 3. Type `npm install` or `yarn install`
 4. Add .env file at root folder project
@@ -40,7 +40,11 @@ VUE_APP_URL = localhost:3000
 ## Acknowledgements
 
 - [Axios](https://www.npmjs.com/package/axios)
-- [Vuex](https://vuex.vuejs.org/)
+- [Bootstrap Vue](https://bootstrap-vue.org)
+- [Google Maps Vue](https://www.npmjs.com/package/vue2-google-maps)
+- [Socket Io Client](https://socket.io/docs/v3/index.html)
+- [Vue Geolocation](https://www.npmjs.com/package/vue-browser-geolocation)
+- [Vuex](https://vuex.vuejs.org)
 
 ## License
 
