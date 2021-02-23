@@ -252,7 +252,7 @@ export default {
       this.createRoomChat(setData)
         .then(result => {
           this.$toasted.success(result);
-          this.$router.go();
+          this.getChatRoom(this.user.user_id);
         })
         .catch(error => {
           this.$toasted.error(error);

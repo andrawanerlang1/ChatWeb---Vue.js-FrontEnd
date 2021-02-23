@@ -139,12 +139,16 @@ export default {
       const setDataReverse = { user_id: id, friend_id: this.user.user_id };
       await this.acceptFriends(setData);
       await this.acceptFriends(setDataReverse);
-      this.$router.go();
+      await this.getFriendReqs(this.user.user_id);
+      await this.getFriendList(this.user.user_id);
+      this.$bvModal.hide("modalAcceptFriend");
     },
-    deleteFriendClick(id) {
+    async deleteFriendClick(id) {
       const setData = { user_id: this.user.user_id, friend_id: id };
-      this.deleteFriends(setData);
-      this.$router.go();
+      await this.deleteFriends(setData);
+      await this.getFriendReqs(this.user.user_id);
+      await this.getFriendList(this.user.user_id);
+      this.$bvModal.hide("modalDeleteFriend");
     },
     showModal(index) {
       this.userIndex = index;
