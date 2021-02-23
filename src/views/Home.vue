@@ -55,16 +55,21 @@ export default {
           user_lat: coordinates.lat,
           user_lng: coordinates.lng
         };
-        this.updateUsers(setData)
-          .then(result => {
-            console.log(result);
-            this.$toasted.success("Location is uptodate", {
-              duration: 2000
+        if (coordinates.accuracy < 7000) {
+          console.log("Geolocation accuracy is " + coordinates.accuracy);
+          this.updateUsers(setData)
+            .then(result => {
+              console.log(result);
+              this.$toasted.success("Location is uptodate", {
+                duration: 2000
+              });
+            })
+            .catch(error => {
+              this.$toasted.error(error.data.msg);
             });
-          })
-          .catch(error => {
-            this.$toasted.error(error.data.msg);
-          });
+        } else {
+          this.$toasted.error("Bad accuracy reading location");
+        }
       })
       .catch(error => {
         alert(error);
